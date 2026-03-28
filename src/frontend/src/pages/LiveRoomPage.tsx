@@ -86,14 +86,6 @@ const SAMPLE_ROOMS_MAP: Record<
   },
 };
 
-const SAMPLE_MESSAGES = [
-  { id: "s1", sender: "Farhan", message: "🔥🔥🔥 amazing!" },
-  { id: "s2", sender: "Mitu", message: "Love this stream!" },
-  { id: "s3", sender: "Rubel", message: "Good evening everyone 👋" },
-  { id: "s4", sender: "Sima", message: "❤️ beautiful!" },
-  { id: "s5", sender: "Jahid", message: "Keep it up!" },
-];
-
 const COIN_GIFTS = [
   { amount: 500, label: "500" },
   { amount: 1000, label: "1K" },
@@ -138,26 +130,21 @@ export default function LiveRoomPage({
   const { data: chatMessages } = useGetChatMessages(roomId);
   const sendMessage = useSendMessage();
 
-  // Camera/mic state
   const [isLive, setIsLive] = useState(false);
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
-  // Gift sheet
   const [giftOpen, setGiftOpen] = useState(false);
   const [floatingCoins, setFloatingCoins] = useState<
     { id: number; label: string }[]
   >([]);
-
-  // Vote overlay
   const [voteOpen, setVoteOpen] = useState(false);
   const [votes, setVotes] = useState({ a: 42, b: 31 });
 
   const room = rooms?.find((r) => r.id === roomId);
   const fallback = SAMPLE_ROOMS_MAP[roomId.toString()];
-
   const displayTitle = room?.title ?? fallback?.title ?? "Live Stream";
   const displayHost = room?.hostName ?? fallback?.hostName ?? "Host";
   const displayThumb =
@@ -173,21 +160,26 @@ export default function LiveRoomPage({
       : Number(room.startTime)
     : (fallback?.startTime ?? Date.now());
 
+  const principal = identity?.getPrincipal().toString() ?? "";
+  const userId = principal
+    ? Math.abs(
+        (principal.split("").reduce((a, c) => a + c.charCodeAt(0), 0) %
+          9000000) +
+          1000000,
+      ).toString()
+    : "0000000";
+
   useEffect(() => {
     const t = setInterval(() => setTimer((p) => p + 1), 1000);
     return () => clearInterval(t);
   }, []);
 
-  // Cleanup camera on unmount
   useEffect(() => {
     return () => {
-      for (const track of streamRef.current?.getTracks() ?? []) {
-        track.stop();
-      }
+      for (const track of streamRef.current?.getTracks() ?? []) track.stop();
     };
   }, []);
 
-  // Auto-start camera when host enters
   // biome-ignore lint/correctness/useExhaustiveDependencies: intentionally run once on mount
   useEffect(() => {
     if (!isHost) return;
@@ -205,9 +197,8 @@ export default function LiveRoomPage({
       }
     };
     startCamera();
-  }, []); // eslint-disable-line
+  }, []);
 
-  // Attach stream to video element once isLive is true
   useEffect(() => {
     if (
       isLive &&
@@ -229,15 +220,10 @@ export default function LiveRoomPage({
           senderName: m.senderName,
           message: m.message,
         }))
-      : SAMPLE_MESSAGES.map((m) => ({
-          key: m.id,
-          senderName: m.sender,
-          message: m.message,
-        }));
+      : [];
 
   const handleSend = async () => {
     if (!message.trim()) return;
-    const principal = identity?.getPrincipal().toString() ?? "guest";
     try {
       await sendMessage.mutateAsync({
         roomId,
@@ -252,9 +238,7 @@ export default function LiveRoomPage({
 
   const handleGoLive = useCallback(async () => {
     if (isLive) {
-      for (const track of streamRef.current?.getTracks() ?? []) {
-        track.stop();
-      }
+      for (const track of streamRef.current?.getTracks() ?? []) track.stop();
       streamRef.current = null;
       if (videoRef.current) videoRef.current.srcObject = null;
       setIsLive(false);
@@ -266,7 +250,6 @@ export default function LiveRoomPage({
         audio: true,
       });
       streamRef.current = stream;
-      // srcObject is set via useEffect after isLive becomes true
       setIsLive(true);
       toast.success("🔴 You are now live!");
     } catch {
@@ -275,20 +258,14 @@ export default function LiveRoomPage({
   }, [isLive, liveType]);
 
   const toggleMic = () => {
-    if (streamRef.current) {
-      for (const t of streamRef.current.getAudioTracks()) {
-        t.enabled = !micOn;
-      }
-    }
+    if (streamRef.current)
+      for (const t of streamRef.current.getAudioTracks()) t.enabled = !micOn;
     setMicOn((p) => !p);
   };
 
   const toggleCam = () => {
-    if (streamRef.current) {
-      for (const t of streamRef.current.getVideoTracks()) {
-        t.enabled = !camOn;
-      }
-    }
+    if (streamRef.current)
+      for (const t of streamRef.current.getVideoTracks()) t.enabled = !camOn;
     setCamOn((p) => !p);
   };
 
@@ -297,17 +274,17 @@ export default function LiveRoomPage({
     toast.success(`🎁 Sent ${gift.label} coins!`);
     const coinId = Date.now();
     setFloatingCoins((prev) => [...prev, { id: coinId, label: gift.label }]);
-    setTimeout(() => {
-      setFloatingCoins((prev) => prev.filter((c) => c.id !== coinId));
-    }, 2000);
+    setTimeout(
+      () => setFloatingCoins((prev) => prev.filter((c) => c.id !== coinId)),
+      2000,
+    );
   };
 
   const handleShare = async () => {
     const url = window.location.href;
     try {
-      if (navigator.share) {
-        await navigator.share({ title: displayTitle, url });
-      } else {
+      if (navigator.share) await navigator.share({ title: displayTitle, url });
+      else {
         await navigator.clipboard.writeText(url);
         toast.success("Link copied!");
       }
@@ -327,32 +304,46 @@ export default function LiveRoomPage({
 
   return (
     <div className="flex flex-col h-screen bg-black relative overflow-hidden">
-      {/* Video background */}
+      {/* Video / Audio background */}
       <div className="absolute inset-0">
-        {/* Video element always in DOM; shown only for video live */}
         <video
           ref={videoRef}
           autoPlay
           muted
           playsInline
-          className={`w-full h-full object-cover ${
-            isLive && liveType === "video" ? "block" : "hidden"
-          }`}
+          className={`w-full h-full object-cover ${isLive && liveType === "video" ? "block" : "hidden"}`}
         />
 
         {isLive && liveType === "audio" && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-orange-600 via-orange-500 to-orange-800">
-            <div className="flex flex-col items-center gap-6">
-              <div className="w-32 h-32 rounded-full bg-white/20 flex items-center justify-center shadow-2xl border-4 border-white/30">
-                <Mic size={60} className="text-white animate-pulse" />
+          <div
+            className="absolute inset-0 flex flex-col items-center justify-center"
+            style={{
+              background:
+                "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.54 0.20 38) 100%)",
+            }}
+          >
+            <motion.div
+              className="flex flex-col items-center gap-6"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+            >
+              <div className="w-36 h-36 rounded-full bg-white/20 flex items-center justify-center border-4 border-white/30 shadow-2xl overflow-hidden">
+                <img
+                  src="/assets/generated/ringid-logo.dim_120x120.png"
+                  alt="RingID 2"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-white text-4xl font-extrabold tracking-widest drop-shadow-lg">
                 RingID 2
               </span>
-              <span className="text-orange-100 text-lg font-semibold">
-                🎵 Audio Live
-              </span>
-            </div>
+              <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
+                <Mic size={16} className="text-white animate-pulse" />
+                <span className="text-white/90 text-sm font-semibold">
+                  Audio Live
+                </span>
+              </div>
+            </motion.div>
           </div>
         )}
 
@@ -367,7 +358,7 @@ export default function LiveRoomPage({
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/80" />
       </div>
 
-      {/* Floating coin animations */}
+      {/* Floating coins */}
       <AnimatePresence>
         {floatingCoins.map((coin) => (
           <motion.div
@@ -383,46 +374,34 @@ export default function LiveRoomPage({
         ))}
       </AnimatePresence>
 
-      {/* Top overlay */}
+      {/* Top bar */}
       <div className="relative z-10 flex items-center justify-between px-4 pt-5 pb-2">
         <button
           type="button"
           onClick={() => navigate({ name: "home" })}
-          className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center text-white"
+          className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center"
           data-ocid="live.close_button"
         >
-          <ArrowLeft size={22} />
+          <ArrowLeft size={22} className="text-white" />
         </button>
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-2">
-            <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded animate-pulse">
-              {isLive ? "🔴 LIVE" : "LIVE"}
+            <span
+              className={`text-white text-xs font-bold px-2 py-0.5 rounded-full ${isLive ? "bg-red-500 animate-pulse" : "bg-red-500/70"}`}
+            >
+              🔴 LIVE
             </span>
-            <span className="text-white text-base font-semibold">
+            <span className="text-white text-sm font-semibold max-w-[160px] truncate">
               {displayTitle}
             </span>
           </div>
-          <span className="text-white/70 text-sm">
-            {isHost
-              ? `You · #${
-                  identity?.getPrincipal().toString()
-                    ? Math.abs(
-                        (identity
-                          .getPrincipal()
-                          .toString()
-                          .split("")
-                          .reduce((a, c) => a + c.charCodeAt(0), 0) %
-                          9000000) +
-                          1000000,
-                      ).toString()
-                    : "0000000"
-                }`
-              : displayHost}
+          <span className="text-white/70 text-xs mt-0.5">
+            {isHost ? `You · #${userId}` : displayHost}
           </span>
         </div>
         <div className="flex items-center gap-1 bg-black/40 px-2.5 py-1.5 rounded-full">
-          <Users size={14} className="text-white" />
-          <span className="text-white text-sm">
+          <Users size={12} className="text-white" />
+          <span className="text-white text-xs">
             {(displayViewers + Math.floor(timer / 30)).toLocaleString()}
           </span>
         </div>
@@ -430,66 +409,59 @@ export default function LiveRoomPage({
 
       {/* Timer */}
       <div className="relative z-10 flex justify-center">
-        <span className="bg-black/40 text-white text-sm px-3 py-1 rounded-full">
+        <span className="bg-black/40 text-white text-xs px-3 py-1 rounded-full">
           {formatDuration(startMs)}
         </span>
       </div>
 
-      {/* Right-side action buttons (TikTok style) */}
+      {/* Right actions */}
       <div className="absolute right-3 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-4 items-center">
-        {/* Heart */}
-        <button
-          type="button"
-          onClick={() => toast.success("❤️ Liked!")}
-          className="flex flex-col items-center gap-0.5"
-          data-ocid="live.toggle"
-        >
-          <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center">
-            <Heart size={20} className="text-red-400" />
-          </div>
-          <span className="text-white text-xs">Like</span>
-        </button>
+        {[
+          {
+            icon: Heart,
+            label: "Like",
+            onClick: () => toast.success("❤️ Liked!"),
+            color: "text-red-400",
+            ocid: "live.toggle",
+          },
+          {
+            label: "Gift",
+            emoji: "🎁",
+            onClick: () => setGiftOpen(true),
+            ocid: "live.open_modal_button",
+          },
+          {
+            label: "Vote",
+            emoji: "🗳️",
+            onClick: () => setVoteOpen((v) => !v),
+            ocid: "live.vote.button",
+          },
+          {
+            icon: Share2,
+            label: "Share",
+            onClick: handleShare,
+            color: "text-white",
+            ocid: "live.share.button",
+          },
+        ].map((btn) => (
+          <button
+            key={btn.label}
+            type="button"
+            onClick={btn.onClick}
+            className="flex flex-col items-center gap-0.5"
+            data-ocid={btn.ocid}
+          >
+            <div className="w-11 h-11 rounded-full bg-black/40 flex items-center justify-center">
+              {"emoji" in btn ? (
+                <span className="text-xl">{btn.emoji}</span>
+              ) : (
+                btn.icon && <btn.icon size={20} className={btn.color} />
+              )}
+            </div>
+            <span className="text-white text-[10px]">{btn.label}</span>
+          </button>
+        ))}
 
-        {/* Gift */}
-        <button
-          type="button"
-          onClick={() => setGiftOpen(true)}
-          className="flex flex-col items-center gap-0.5"
-          data-ocid="live.open_modal_button"
-        >
-          <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center">
-            <span className="text-xl">🎁</span>
-          </div>
-          <span className="text-white text-xs">Gift</span>
-        </button>
-
-        {/* Vote */}
-        <button
-          type="button"
-          onClick={() => setVoteOpen((v) => !v)}
-          className="flex flex-col items-center gap-0.5"
-          data-ocid="live.vote.button"
-        >
-          <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center">
-            <span className="text-xl">🗳️</span>
-          </div>
-          <span className="text-white text-xs">Vote</span>
-        </button>
-
-        {/* Share */}
-        <button
-          type="button"
-          onClick={handleShare}
-          className="flex flex-col items-center gap-0.5"
-          data-ocid="live.share.button"
-        >
-          <div className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center">
-            <Share2 size={18} className="text-white" />
-          </div>
-          <span className="text-white text-xs">Share</span>
-        </button>
-
-        {/* Camera toggle - hidden for audio live */}
         {isLive && liveType === "video" && (
           <button
             type="button"
@@ -498,9 +470,7 @@ export default function LiveRoomPage({
             data-ocid="live.camera.toggle"
           >
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                camOn ? "bg-black/40" : "bg-red-500/80"
-              }`}
+              className={`w-11 h-11 rounded-full flex items-center justify-center ${camOn ? "bg-black/40" : "bg-red-500/80"}`}
             >
               {camOn ? (
                 <Camera size={18} className="text-white" />
@@ -508,11 +478,10 @@ export default function LiveRoomPage({
                 <CameraOff size={18} className="text-white" />
               )}
             </div>
-            <span className="text-white text-xs">Cam</span>
+            <span className="text-white text-[10px]">Cam</span>
           </button>
         )}
 
-        {/* Mic toggle */}
         {isLive && (
           <button
             type="button"
@@ -521,9 +490,7 @@ export default function LiveRoomPage({
             data-ocid="live.mic.toggle"
           >
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                micOn ? "bg-black/40" : "bg-red-500/80"
-              }`}
+              className={`w-11 h-11 rounded-full flex items-center justify-center ${micOn ? "bg-black/40" : "bg-red-500/80"}`}
             >
               {micOn ? (
                 <Mic size={18} className="text-white" />
@@ -531,7 +498,7 @@ export default function LiveRoomPage({
                 <MicOff size={18} className="text-white" />
               )}
             </div>
-            <span className="text-white text-xs">Mic</span>
+            <span className="text-white text-[10px]">Mic</span>
           </button>
         )}
       </div>
@@ -546,9 +513,7 @@ export default function LiveRoomPage({
             exit={{ opacity: 0, scale: 0.9 }}
           >
             <div className="flex items-center justify-between mb-3">
-              <span className="text-white font-bold text-base">
-                🗳️ Live Vote
-              </span>
+              <span className="text-white font-bold">🗳️ Live Vote</span>
               <button
                 type="button"
                 onClick={() => setVoteOpen(false)}
@@ -557,7 +522,6 @@ export default function LiveRoomPage({
                 ×
               </button>
             </div>
-            {/* Team A */}
             <button
               type="button"
               onClick={() => setVotes((v) => ({ ...v, a: v.a + 1 }))}
@@ -572,7 +536,6 @@ export default function LiveRoomPage({
               </div>
               <Progress value={pctA} className="h-3 bg-white/20" />
             </button>
-            {/* Team B */}
             <button
               type="button"
               onClick={() => setVotes((v) => ({ ...v, b: v.b + 1 }))}
@@ -592,7 +555,7 @@ export default function LiveRoomPage({
 
       <div className="flex-1" />
 
-      {/* Chat panel */}
+      {/* Chat */}
       <div className="relative z-10 max-h-64">
         <ScrollArea className="h-56 px-3">
           <AnimatePresence>
@@ -601,16 +564,16 @@ export default function LiveRoomPage({
                 key={msg.key}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="flex items-start gap-2 mb-1.5"
+                className="flex items-start gap-2 mb-2"
                 data-ocid={`live.item.${i + 1}`}
               >
-                <div className="w-7 h-7 rounded-full bg-orange-500 flex items-center justify-center flex-none">
+                <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-none">
                   <span className="text-white text-xs font-bold">
                     {msg.senderName[0]}
                   </span>
                 </div>
                 <div className="bg-black/40 rounded-xl px-3 py-1.5 max-w-[70%]">
-                  <span className="text-orange-400 text-xs font-semibold">
+                  <span className="text-primary text-xs font-semibold">
                     {msg.senderName}
                   </span>
                   <p className="text-white text-sm">{msg.message}</p>
@@ -618,11 +581,16 @@ export default function LiveRoomPage({
               </motion.div>
             ))}
           </AnimatePresence>
+          {allMessages.length === 0 && (
+            <p className="text-white/40 text-sm text-center py-4">
+              No comments yet. Be the first!
+            </p>
+          )}
           <div ref={messagesEndRef} />
         </ScrollArea>
       </div>
 
-      {/* Bottom action row */}
+      {/* Bottom bar */}
       <div className="relative z-10 px-3 pb-4 pt-2 flex items-center gap-2">
         <Input
           placeholder="Say something..."
@@ -635,21 +603,17 @@ export default function LiveRoomPage({
         <Button
           type="button"
           size="icon"
-          className="w-10 h-10 rounded-full bg-orange-500 flex-none"
+          className="w-10 h-10 rounded-full bg-primary flex-none"
           onClick={handleSend}
           disabled={sendMessage.isPending || !message.trim()}
           data-ocid="live.submit_button"
         >
           <Send size={18} />
         </Button>
-
-        {/* Go Live / Stop Live button */}
         <button
           type="button"
           onClick={handleGoLive}
-          className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-white text-sm font-bold ${
-            isLive ? "bg-red-600" : "bg-orange-500"
-          }`}
+          className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-white text-sm font-bold ${isLive ? "bg-red-600" : "bg-primary"}`}
           data-ocid="live.primary_button"
         >
           {isLive ? (
@@ -668,11 +632,11 @@ export default function LiveRoomPage({
       <Sheet open={giftOpen} onOpenChange={setGiftOpen}>
         <SheetContent
           side="bottom"
-          className="rounded-t-3xl bg-orange-50 border-orange-200"
+          className="rounded-t-3xl bg-accent border-primary/20"
           data-ocid="live.sheet"
         >
           <SheetHeader>
-            <SheetTitle className="text-orange-600 text-center text-lg">
+            <SheetTitle className="text-primary text-center">
               🎁 Send a Gift
             </SheetTitle>
           </SheetHeader>
@@ -682,14 +646,12 @@ export default function LiveRoomPage({
                 key={gift.amount}
                 type="button"
                 onClick={() => handleSendGift(gift)}
-                className="flex flex-col items-center gap-1.5 bg-white rounded-2xl py-4 shadow-sm border border-orange-100 active:bg-orange-50"
+                className="flex flex-col items-center gap-1.5 bg-white rounded-2xl py-4 shadow-card border border-border active:bg-accent"
                 data-ocid="live.gift.button"
               >
                 <span className="text-3xl">🪙</span>
-                <span className="text-orange-600 font-bold text-base">
-                  {gift.label}
-                </span>
-                <span className="text-gray-400 text-xs">coins</span>
+                <span className="text-primary font-bold">{gift.label}</span>
+                <span className="text-muted-foreground text-xs">coins</span>
               </button>
             ))}
           </div>

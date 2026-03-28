@@ -12,7 +12,6 @@ import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import type { AppPage } from "../App";
-import BottomNav from "../components/BottomNav";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 import {
   useCreateRoom,
@@ -42,7 +41,6 @@ export default function ProfilePage({
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Live flow state
   const [liveTypeOpen, setLiveTypeOpen] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedLiveType, setSelectedLiveType] = useState<"audio" | "video">(
@@ -63,11 +61,6 @@ export default function ProfilePage({
   const defaultAvatarUrl = `https://api.dicebear.com/9.x/thumbs/svg?seed=${shortId}`;
   const avatarUrl = avatarPreview ?? savedAvatarUrl ?? defaultAvatarUrl;
 
-  const startEditing = () => {
-    setDisplayName(currentName);
-    setEditing(true);
-  };
-
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -77,16 +70,9 @@ export default function ProfilePage({
       if (typeof result === "string") {
         setAvatarPreview(result);
         updateProfile
-          .mutateAsync({
-            displayName: currentName,
-            avatarUrl: result,
-          })
-          .then(() => {
-            toast.success("Profile picture updated!");
-          })
-          .catch(() => {
-            toast.error("Failed to update picture");
-          });
+          .mutateAsync({ displayName: currentName, avatarUrl: result })
+          .then(() => toast.success("Profile picture updated!"))
+          .catch(() => toast.error("Failed to update picture"));
       }
     };
     reader.readAsDataURL(file);
@@ -134,28 +120,39 @@ export default function ProfilePage({
     });
   };
 
+  const SAMPLE_POSTS = [
+    { id: 1, img: "https://picsum.photos/seed/p1/200/200" },
+    { id: 2, img: "https://picsum.photos/seed/p2/200/200" },
+    { id: 3, img: "https://picsum.photos/seed/p3/200/200" },
+    { id: 4, img: "https://picsum.photos/seed/p4/200/200" },
+    { id: 5, img: "https://picsum.photos/seed/p5/200/200" },
+    { id: 6, img: "https://picsum.photos/seed/p6/200/200" },
+  ];
+
   return (
-    <div className="flex flex-col h-screen bg-background">
+    <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-[#FF6B00] text-white flex items-center px-3 h-16 flex-none">
+      <header className="orange-gradient text-white flex items-center px-4 h-16 flex-none">
         <button
           type="button"
           onClick={() => navigate({ name: "home" })}
-          className="p-2 rounded-full hover:bg-white/10"
+          className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center mr-3"
           data-ocid="profile.close_button"
         >
-          <ArrowLeft size={22} />
+          <ArrowLeft size={20} />
         </button>
-        <span className="font-bold text-lg absolute left-1/2 -translate-x-1/2">
+        <span className="font-bold text-lg flex-1 text-center mr-9">
           My Profile
         </span>
       </header>
 
-      <div className="flex-1 overflow-y-auto pb-24">
-        {/* Profile hero */}
-        <div className="bg-[#FF6B00] h-32 relative" />
-        <div className="px-4 -mt-12 mb-4 flex flex-col items-center">
-          <div className="relative">
+      <div className="flex-1 overflow-y-auto pb-6">
+        {/* Orange banner */}
+        <div className="orange-gradient h-28 relative" />
+
+        {/* Avatar & info */}
+        <div className="px-5 -mt-14 flex flex-col items-center">
+          <div className="relative mb-3">
             <input
               ref={fileInputRef}
               type="file"
@@ -166,92 +163,105 @@ export default function ProfilePage({
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="relative block"
               data-ocid="profile.upload_button"
             >
-              <Avatar className="w-28 h-28 border-4 border-background shadow-lg">
+              <Avatar className="w-28 h-28 border-4 border-white shadow-card">
                 {avatarUrl.startsWith("data:") ||
                 avatarUrl.startsWith("http") ? (
                   <AvatarImage src={avatarUrl} className="object-cover" />
                 ) : null}
-                <AvatarFallback className="bg-[#FF6B00] text-white text-3xl">
+                <AvatarFallback
+                  className="text-white text-3xl font-bold"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
+                  }}
+                >
                   {currentName[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="absolute bottom-0 right-0 w-9 h-9 bg-[#FF6B00] rounded-full flex items-center justify-center border-2 border-background">
-                <Camera size={16} className="text-white" />
+              <div className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-white">
+                <Camera size={14} className="text-white" />
               </div>
             </button>
           </div>
 
-          <motion.div
-            className="mt-3 text-center w-full"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            {editing ? (
-              <div className="flex gap-2 items-center mt-1 justify-center">
-                <Input
-                  value={displayName}
-                  onChange={(e) => setDisplayName(e.target.value)}
-                  className="text-center h-10 max-w-[200px]"
-                  autoFocus
-                  data-ocid="profile.input"
-                />
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 justify-center">
-                <h2 className="text-2xl font-bold">
-                  {isLoading ? "Loading..." : currentName}
-                </h2>
-                <button
-                  type="button"
-                  onClick={startEditing}
-                  data-ocid="profile.edit_button"
-                >
-                  <Edit2 size={18} className="text-muted-foreground" />
-                </button>
-              </div>
-            )}
-            <p className="text-sm font-semibold text-[#FF6B00] mt-1">
-              ID: {userId}
-            </p>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {principal.slice(0, 20)}...
-            </p>
-          </motion.div>
+          {editing ? (
+            <div className="flex gap-2 items-center mb-2">
+              <Input
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                className="text-center h-10 max-w-[200px]"
+                autoFocus
+                data-ocid="profile.input"
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 mb-1">
+              <h2 className="text-xl font-bold">
+                {isLoading ? "Loading..." : currentName}
+              </h2>
+              <button
+                type="button"
+                onClick={() => {
+                  setDisplayName(currentName);
+                  setEditing(true);
+                }}
+                data-ocid="profile.edit_button"
+              >
+                <Edit2 size={16} className="text-muted-foreground" />
+              </button>
+            </div>
+          )}
 
-          {/* Gold Coins */}
-          <div className="flex items-center gap-2 mt-3 bg-yellow-50 border border-yellow-200 rounded-full px-4 py-2">
-            <span className="text-xl">🪙</span>
-            <span className="text-sm font-semibold text-yellow-700">
-              Gold Coins: 25,000
+          <div className="flex items-center gap-2 mb-1">
+            <span className="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">
+              ID: #{userId}
             </span>
           </div>
 
           {/* Stats */}
-          <div className="flex gap-8 mt-5">
-            <div className="text-center">
-              <p className="text-xl font-bold">0</p>
-              <p className="text-sm text-muted-foreground">Followers</p>
+          <div className="flex gap-6 mt-3 mb-4">
+            {[
+              { label: "Followers", val: "0" },
+              { label: "Following", val: "0" },
+              { label: "Posts", val: "6" },
+            ].map((s, i) => (
+              <div key={s.label} className="text-center">
+                {i > 0 && <div className="absolute" />}
+                <p className="text-xl font-bold">{s.val}</p>
+                <p className="text-xs text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Coin balances */}
+          <div className="w-full grid grid-cols-2 gap-3 mb-4">
+            <div className="bg-white rounded-2xl p-3 shadow-card flex items-center gap-3">
+              <span className="text-2xl">🪙</span>
+              <div>
+                <p className="text-xs text-muted-foreground">Coins</p>
+                <p className="font-bold text-sm">0</p>
+              </div>
             </div>
-            <div className="w-px bg-border" />
-            <div className="text-center">
-              <p className="text-xl font-bold">0</p>
-              <p className="text-sm text-muted-foreground">Following</p>
-            </div>
-            <div className="w-px bg-border" />
-            <div className="text-center">
-              <p className="text-xl font-bold">0</p>
-              <p className="text-sm text-muted-foreground">Streams</p>
+            <div className="bg-white rounded-2xl p-3 shadow-card flex items-center gap-3">
+              <span className="text-2xl">🥇</span>
+              <div>
+                <p className="text-xs text-muted-foreground">Gold Coins</p>
+                <p className="font-bold text-sm text-yellow-600">25,000</p>
+              </div>
             </div>
           </div>
 
-          {/* Go Live from profile */}
+          {/* Go Live */}
           <button
             type="button"
             onClick={() => setLiveTypeOpen(true)}
-            className="mt-4 w-full bg-[#FF6B00] text-white rounded-full py-3 flex items-center justify-center gap-2 font-semibold text-base shadow"
+            className="w-full text-white rounded-2xl py-3.5 flex items-center justify-center gap-2 font-bold text-base shadow-orange mb-4"
+            style={{
+              background:
+                "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
+            }}
             data-ocid="profile.primary_button"
           >
             <Radio size={18} />
@@ -259,7 +269,7 @@ export default function ProfilePage({
           </button>
 
           {editing && (
-            <div className="flex gap-2 mt-4 w-full">
+            <div className="flex gap-2 w-full mb-4">
               <Button
                 variant="outline"
                 className="flex-1"
@@ -269,7 +279,11 @@ export default function ProfilePage({
                 Cancel
               </Button>
               <Button
-                className="flex-1 bg-[#FF6B00] hover:bg-orange-600 text-white"
+                className="flex-1"
+                style={{
+                  background:
+                    "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
+                }}
                 onClick={handleSave}
                 disabled={updateProfile.isPending}
                 data-ocid="profile.save_button"
@@ -280,8 +294,31 @@ export default function ProfilePage({
           )}
         </div>
 
-        {/* Logout */}
-        <div className="px-4 mt-4">
+        {/* Posts grid */}
+        <div className="px-4 mb-4">
+          <h3 className="font-bold text-sm mb-3 text-foreground">Posts</h3>
+          <div className="grid grid-cols-3 gap-1">
+            {SAMPLE_POSTS.map((post, i) => (
+              <motion.div
+                key={post.id}
+                className="aspect-square rounded-lg overflow-hidden"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: i * 0.06 }}
+                data-ocid={`profile.item.${i + 1}`}
+              >
+                <img
+                  src={post.img}
+                  alt="post"
+                  className="w-full h-full object-cover"
+                />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Sign out */}
+        <div className="px-4 mb-4">
           <Button
             variant="outline"
             className="w-full border-destructive text-destructive hover:bg-destructive/10"
@@ -292,8 +329,7 @@ export default function ProfilePage({
           </Button>
         </div>
 
-        {/* Footer */}
-        <footer className="mt-8 pb-4 text-center text-sm text-muted-foreground">
+        <footer className="py-3 text-center text-xs text-muted-foreground">
           © {new Date().getFullYear()}. Built with ❤️ using{" "}
           <a
             href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
@@ -306,14 +342,14 @@ export default function ProfilePage({
         </footer>
       </div>
 
-      {/* Live Type Selection Dialog */}
+      {/* Live Type Dialog */}
       <Dialog open={liveTypeOpen} onOpenChange={setLiveTypeOpen}>
         <DialogContent
           className="max-w-[380px] rounded-2xl"
           data-ocid="profile.livetype.dialog"
         >
           <DialogHeader>
-            <DialogTitle className="text-center text-xl font-bold text-orange-600">
+            <DialogTitle className="text-center text-xl font-bold text-primary">
               Choose Live Type
             </DialogTitle>
           </DialogHeader>
@@ -321,40 +357,40 @@ export default function ProfilePage({
             <button
               type="button"
               onClick={() => handleSelectLiveType("audio")}
-              className="flex flex-col items-center gap-3 bg-orange-50 border-2 border-orange-200 rounded-2xl py-8 px-4 active:bg-orange-100 hover:border-orange-400 transition-colors"
+              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
               data-ocid="profile.audio_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
                 <Mic size={32} className="text-white" />
               </div>
-              <span className="text-orange-700 font-bold text-base">
+              <span className="text-primary font-bold text-base">
                 Audio Live
               </span>
-              <span className="text-gray-500 text-xs text-center">
-                Microphone only, RingID 2 branding shown
+              <span className="text-muted-foreground text-xs text-center">
+                Microphone only, RingID 2 branding
               </span>
             </button>
             <button
               type="button"
               onClick={() => handleSelectLiveType("video")}
-              className="flex flex-col items-center gap-3 bg-orange-50 border-2 border-orange-200 rounded-2xl py-8 px-4 active:bg-orange-100 hover:border-orange-400 transition-colors"
+              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
               data-ocid="profile.video_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
                 <Camera size={32} className="text-white" />
               </div>
-              <span className="text-orange-700 font-bold text-base">
+              <span className="text-primary font-bold text-base">
                 Video Live
               </span>
-              <span className="text-gray-500 text-xs text-center">
-                Camera + microphone, full video stream
+              <span className="text-muted-foreground text-xs text-center">
+                Camera + microphone stream
               </span>
             </button>
           </div>
         </DialogContent>
       </Dialog>
 
-      {/* Go Live Title Dialog */}
+      {/* Go Live title dialog */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
           className="max-w-[380px] rounded-2xl"
@@ -365,7 +401,7 @@ export default function ProfilePage({
           </DialogHeader>
           <div className="space-y-4 pt-2">
             <Input
-              placeholder="Stream title (e.g. Morning Yoga 🧘)"
+              placeholder="Stream title (e.g. Morning Talk 🎙️)"
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleCreate()}
@@ -381,7 +417,11 @@ export default function ProfilePage({
                 Cancel
               </Button>
               <Button
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                className="flex-1"
+                style={{
+                  background:
+                    "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
+                }}
                 onClick={handleCreate}
                 disabled={createRoom.isPending || !newTitle.trim()}
                 data-ocid="profile.submit_button"
@@ -392,8 +432,6 @@ export default function ProfilePage({
           </div>
         </DialogContent>
       </Dialog>
-
-      <BottomNav navigate={navigate} active="profile" />
     </div>
   );
 }

@@ -1,354 +1,211 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  ArrowLeft,
-  Edit,
-  Lock,
-  MessageCircle,
-  Phone,
-  Send,
-  Users,
-  Video,
-  X,
-} from "lucide-react";
+import { ArrowLeft, MessageCircle, Phone, Search, Video } from "lucide-react";
+import { motion } from "motion/react";
 import { useState } from "react";
+import { toast } from "sonner";
 import type { AppPage } from "../App";
-import BottomNav from "../components/BottomNav";
 
-const contacts = [
+const CONTACTS = [
   {
     id: 1,
-    name: "Riri",
-    message: "Hey wanna know a secret?",
+    name: "Priya Sharma",
+    lastMsg: "Good morning! 🌞",
     time: "2m",
-    unread: 3,
-    online: true,
+    unread: 2,
+    color: "bg-pink-500",
   },
   {
     id: 2,
-    name: "Farhan",
-    message: "Good idea!!",
+    name: "Arif Hossain",
+    lastMsg: "Are you coming to the live?",
     time: "15m",
     unread: 0,
-    online: false,
+    color: "bg-blue-500",
   },
   {
     id: 3,
-    name: "Mitu",
-    message: "Love this stream!",
+    name: "Ruma Begum",
+    lastMsg: "Loved your cooking stream 🍛",
     time: "1h",
     unread: 1,
-    online: true,
+    color: "bg-emerald-500",
   },
   {
     id: 4,
-    name: "Rubel",
-    message: "Good evening",
-    time: "2h",
+    name: "Karim Rahman",
+    lastMsg: "Thanks for watching!",
+    time: "3h",
     unread: 0,
-    online: false,
+    color: "bg-purple-500",
   },
   {
     id: 5,
-    name: "Sima",
-    message: "❤️ beautiful!",
-    time: "3h",
-    unread: 2,
-    online: true,
+    name: "Nadia Malik",
+    lastMsg: "New guitar lesson tomorrow 🎸",
+    time: "5h",
+    unread: 3,
+    color: "bg-orange-500",
   },
   {
     id: 6,
-    name: "Jahid",
-    message: "Keep it up!",
-    time: "5h",
+    name: "Tanvir Ahmed",
+    lastMsg: "Yoga at 7am tomorrow",
+    time: "8h",
     unread: 0,
-    online: false,
+    color: "bg-teal-500",
+  },
+  {
+    id: 7,
+    name: "Sadia Islam",
+    lastMsg: "See you in the stream!",
+    time: "1d",
+    unread: 0,
+    color: "bg-rose-500",
+  },
+  {
+    id: 8,
+    name: "Rahul Dev",
+    lastMsg: "Great content today 👏",
+    time: "2d",
+    unread: 0,
+    color: "bg-indigo-500",
   },
 ];
-
-const PUBLIC_CHAT_SEED = [
-  { id: "p1", sender: "Farhan", text: "Hello everyone! 👋", time: "2m" },
-  { id: "p2", sender: "Mitu", text: "আজকের লাইভ কেমন লাগছে?", time: "3m" },
-  { id: "p3", sender: "Rubel", text: "সবাই কেমন আছেন?", time: "5m" },
-  { id: "p4", sender: "Sima", text: "RingID zindabad 🎉", time: "7m" },
-];
-
-type CallState = { type: "voice" | "video"; name: string } | null;
 
 export default function ChatPage({
   navigate,
 }: { navigate: (p: AppPage) => void }) {
-  const [activeTab, setActiveTab] = useState<"chat" | "secret" | "public">(
-    "chat",
-  );
-  const [callState, setCallState] = useState<CallState>(null);
-  const [publicMessages, setPublicMessages] = useState(
-    PUBLIC_CHAT_SEED.map((m) => ({ ...m, isMe: false })),
-  );
-  const [publicInput, setPublicInput] = useState("");
+  const [search, setSearch] = useState("");
 
-  const sendPublicMessage = () => {
-    if (!publicInput.trim()) return;
-    setPublicMessages((prev) => [
-      ...prev,
-      {
-        id: `u${Date.now()}`,
-        sender: "You",
-        text: publicInput,
-        time: "now",
-        isMe: true,
-      },
-    ]);
-    setPublicInput("");
-  };
+  const filtered = CONTACTS.filter((c) =>
+    c.name.toLowerCase().includes(search.toLowerCase()),
+  );
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      {/* Calling overlay */}
-      {callState && (
-        <div className="absolute inset-0 z-50 bg-gray-900 flex flex-col items-center justify-center">
-          <div className="w-24 h-24 rounded-full bg-[#FF6B00] flex items-center justify-center mb-6 shadow-2xl">
-            <span className="text-white text-4xl font-bold">
-              {callState.name[0]}
-            </span>
-          </div>
-          <p className="text-white text-2xl font-bold mb-2">{callState.name}</p>
-          <p className="text-white/70 text-base mb-10">
-            {callState.type === "voice"
-              ? "📞 Calling..."
-              : "📹 Video Calling..."}
-          </p>
-          <button
-            type="button"
-            onClick={() => setCallState(null)}
-            className="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center shadow-lg"
-            data-ocid="chat.cancel_button"
-          >
-            <Phone size={24} className="text-white rotate-[135deg]" />
-          </button>
-        </div>
-      )}
-
+    <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#FF6B00] px-4 pt-10 pb-4">
+      <header className="orange-gradient px-4 pt-12 pb-4 flex-none">
         <div className="flex items-center gap-3 mb-4">
           <button
             type="button"
             onClick={() => navigate({ name: "home" })}
-            className="text-white p-1"
-            data-ocid="chat.back.button"
+            className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
+            data-ocid="chat.close_button"
           >
-            <ArrowLeft size={26} />
+            <ArrowLeft size={20} className="text-white" />
           </button>
-          <h1 className="text-white text-xl font-bold flex-1">Chat</h1>
+          <h1 className="text-white text-xl font-bold flex-1">💬 Messages</h1>
+          <span className="text-white/80 text-sm">{CONTACTS.length}</span>
         </div>
-        {/* Tabs */}
-        <div className="flex bg-white/20 rounded-full p-1 gap-1">
-          <button
-            type="button"
-            onClick={() => setActiveTab("chat")}
-            className={`flex-1 py-2 rounded-full text-sm font-semibold transition-all ${
-              activeTab === "chat" ? "bg-white text-[#FF6B00]" : "text-white"
-            }`}
-            data-ocid="chat.tab"
-          >
-            Chat
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("public")}
-            className={`flex-1 py-2 rounded-full text-sm font-semibold transition-all flex items-center justify-center gap-1 ${
-              activeTab === "public" ? "bg-white text-[#FF6B00]" : "text-white"
-            }`}
-            data-ocid="chat.public.tab"
-          >
-            <Users size={13} />
-            Public
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveTab("secret")}
-            className={`flex-1 py-2 rounded-full text-sm font-semibold transition-all flex items-center justify-center gap-1 ${
-              activeTab === "secret" ? "bg-white text-[#FF6B00]" : "text-white"
-            }`}
-            data-ocid="chat.secret.tab"
-          >
-            <Lock size={13} />
-            Secret
-          </button>
+        <div className="relative">
+          <Search
+            size={16}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60"
+          />
+          <input
+            placeholder="Search messages..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full bg-white/20 text-white placeholder:text-white/60 rounded-full pl-9 pr-4 py-2.5 text-sm outline-none"
+            data-ocid="chat.search_input"
+          />
         </div>
-      </div>
+      </header>
 
-      {/* Public Chat */}
-      {activeTab === "public" && (
-        <div className="flex flex-col flex-1 pb-24">
-          <ScrollArea
-            className="flex-1 px-4 pt-3"
-            style={{ height: "calc(100vh - 260px)" }}
-          >
-            <div className="space-y-3">
-              {publicMessages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex items-start gap-2 ${
-                    msg.isMe ? "flex-row-reverse" : ""
-                  }`}
-                >
-                  {!msg.isMe && (
-                    <div className="w-8 h-8 rounded-full bg-[#FF6B00] flex items-center justify-center flex-shrink-0">
-                      <span className="text-white text-xs font-bold">
-                        {msg.sender[0]}
-                      </span>
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-[70%] ${
-                      msg.isMe
-                        ? "bg-[#FF6B00] text-white"
-                        : "bg-white text-gray-800"
-                    } rounded-2xl px-3 py-2 shadow-sm`}
-                  >
-                    {!msg.isMe && (
-                      <p className="text-xs font-semibold text-[#FF6B00] mb-0.5">
-                        {msg.sender}
-                      </p>
-                    )}
-                    <p className="text-sm">{msg.text}</p>
-                    <p
-                      className={`text-[10px] mt-0.5 ${
-                        msg.isMe ? "text-white/70" : "text-gray-400"
-                      }`}
-                    >
-                      {msg.time}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
-          {/* Input */}
-          <div className="absolute bottom-20 left-0 right-0 bg-white border-t border-gray-200 px-3 py-2 flex gap-2">
-            <Input
-              value={publicInput}
-              onChange={(e) => setPublicInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendPublicMessage()}
-              placeholder="Message everyone..."
-              className="flex-1"
-              data-ocid="chat.input"
-            />
-            <button
-              type="button"
-              onClick={sendPublicMessage}
-              className="w-10 h-10 bg-[#FF6B00] rounded-full flex items-center justify-center flex-shrink-0"
-              data-ocid="chat.submit_button"
-            >
-              <Send size={16} className="text-white" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Chat / Secret List */}
-      {(activeTab === "chat" || activeTab === "secret") && (
-        <div className="flex-1 bg-white pb-24">
-          {contacts.map((contact, i) => (
-            <div
+      <ScrollArea className="flex-1">
+        <div className="p-3 space-y-1">
+          {filtered.map((contact, i) => (
+            <motion.button
               key={contact.id}
-              className="flex items-center px-4 py-3 border-b border-gray-100 active:bg-gray-50 cursor-pointer"
+              type="button"
+              onClick={() => toast.info(`Opening chat with ${contact.name}`)}
+              className="w-full bg-white rounded-2xl p-3.5 flex items-center gap-3 text-left shadow-card hover:shadow-md transition-shadow active:scale-[0.99]"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.04 }}
               data-ocid={`chat.item.${i + 1}`}
             >
-              <div className="relative mr-3">
+              <div className="relative flex-none">
                 <Avatar className="w-14 h-14">
-                  <AvatarFallback className="bg-[#FF6B00] text-white text-lg font-bold">
+                  <AvatarFallback
+                    className={`${contact.color} text-white font-bold text-lg`}
+                  >
                     {contact.name[0]}
                   </AvatarFallback>
                 </Avatar>
-                {contact.online && (
-                  <span className="absolute bottom-0.5 right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
+                {contact.unread > 0 && (
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
+                    {contact.unread}
+                  </span>
                 )}
               </div>
+
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-gray-900 text-base">
+                <div className="flex items-center justify-between mb-0.5">
+                  <span className="font-semibold text-sm text-foreground">
                     {contact.name}
                   </span>
-                  <span className="text-xs text-gray-400 ml-2">
+                  <span className="text-xs text-muted-foreground">
                     {contact.time}
                   </span>
                 </div>
-                <div className="flex items-center gap-1 mt-0.5">
-                  {activeTab === "secret" && (
-                    <Lock size={12} className="text-[#FF6B00] flex-shrink-0" />
-                  )}
-                  <span className="text-sm text-gray-500 truncate">
-                    {contact.message}
-                  </span>
-                  {activeTab === "secret" && (
-                    <Badge className="ml-1 bg-[#FF6B00] text-white text-[10px] px-1 py-0 h-4">
-                      Secret
-                    </Badge>
-                  )}
-                </div>
+                <p className="text-xs text-muted-foreground truncate">
+                  {contact.lastMsg}
+                </p>
               </div>
-              {contact.unread > 0 && (
-                <span className="ml-2 bg-[#FF6B00] text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center flex-shrink-0">
-                  {contact.unread}
-                </span>
-              )}
-              {/* Voice call button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCallState({ type: "voice", name: contact.name });
-                }}
-                className="ml-2 w-9 h-9 rounded-full bg-[#FF6B00] flex items-center justify-center flex-shrink-0 shadow-sm"
-                data-ocid={`chat.call.button.${i + 1}`}
-              >
-                <Phone size={15} className="text-white" />
-              </button>
-              {/* Video call button */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setCallState({ type: "video", name: contact.name });
-                }}
-                className="ml-1 w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 shadow-sm"
-                data-ocid={`chat.video.button.${i + 1}`}
-              >
-                <Video size={15} className="text-white" />
-              </button>
-            </div>
+
+              <div className="flex gap-1.5 flex-none">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.info("Starting voice call...");
+                  }}
+                  className="w-9 h-9 rounded-full bg-accent flex items-center justify-center"
+                  data-ocid={`chat.button.${i + 1}`}
+                >
+                  <Phone size={15} className="text-primary" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toast.info("Starting video call...");
+                  }}
+                  className="w-9 h-9 rounded-full bg-accent flex items-center justify-center"
+                  data-ocid={`chat.button.${i + 1}`}
+                >
+                  <Video size={15} className="text-primary" />
+                </button>
+              </div>
+            </motion.button>
           ))}
+
+          {filtered.length === 0 && (
+            <div className="text-center py-16" data-ocid="chat.empty_state">
+              <MessageCircle
+                size={48}
+                className="mx-auto mb-3 text-muted-foreground opacity-30"
+              />
+              <p className="text-muted-foreground">No contacts found</p>
+            </div>
+          )}
         </div>
-      )}
+      </ScrollArea>
 
-      {/* Compose FAB */}
-      {(activeTab === "chat" || activeTab === "secret") && (
-        <button
-          type="button"
-          className="absolute bottom-24 right-5 w-14 h-14 bg-[#FF6B00] rounded-full flex items-center justify-center shadow-lg z-10"
-          data-ocid="chat.open_modal_button"
+      <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
+        © {new Date().getFullYear()}. Built with ❤️ using{" "}
+        <a
+          href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+          className="underline"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <Edit size={24} className="text-white" />
-        </button>
-      )}
-
-      {/* Message icon FAB for public */}
-      {activeTab === "public" && (
-        <button
-          type="button"
-          className="absolute bottom-24 right-5 w-14 h-14 bg-[#FF6B00] rounded-full flex items-center justify-center shadow-lg z-10"
-          data-ocid="chat.open_modal_button"
-        >
-          <MessageCircle size={24} className="text-white" />
-        </button>
-      )}
-
-      <BottomNav navigate={navigate} active="chat" />
+          caffeine.ai
+        </a>
+      </footer>
     </div>
   );
 }

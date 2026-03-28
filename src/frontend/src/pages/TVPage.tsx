@@ -1,134 +1,126 @@
-import { Tv } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 import type { AppPage } from "../App";
-import BottomNav from "../components/BottomNav";
 
-const CATEGORIES = [
-  "All",
-  "Drama",
-  "News",
-  "Sports",
-  "Entertainment",
-  "Islamic",
-  "Kids",
-];
+const CATEGORIES = ["All", "News", "Entertainment", "Sports", "Religious"];
 
 const CHANNELS = [
   {
     id: 1,
-    name: "ATN Bangla",
+    name: "BTV",
+    logo: "/assets/generated/ch-btv.dim_120x120.png",
     category: "Entertainment",
-    viewers: 12400,
-    color: "bg-blue-500",
-    emoji: "📺",
   },
   {
     id: 2,
-    name: "Ekattor TV",
-    category: "News",
-    viewers: 8900,
-    color: "bg-red-500",
-    emoji: "📡",
+    name: "Channel i",
+    logo: "/assets/generated/ch-channeli.dim_120x120.png",
+    category: "Entertainment",
   },
   {
     id: 3,
-    name: "Gazi TV Sports",
-    category: "Sports",
-    viewers: 15200,
-    color: "bg-green-600",
-    emoji: "⚽",
+    name: "ATN Bangla",
+    logo: "/assets/generated/ch-atn.dim_120x120.png",
+    category: "Entertainment",
   },
   {
     id: 4,
-    name: "Islamic Channel BD",
-    category: "Islamic",
-    viewers: 5600,
-    color: "bg-emerald-700",
-    emoji: "🕌",
+    name: "NTV",
+    logo: "/assets/generated/ch-ntv.dim_120x120.png",
+    category: "News",
   },
   {
     id: 5,
-    name: "Cartoon Network BD",
-    category: "Kids",
-    viewers: 9800,
-    color: "bg-yellow-500",
-    emoji: "🎠",
+    name: "Rtv",
+    logo: "/assets/generated/ch-rtv.dim_120x120.png",
+    category: "Entertainment",
   },
   {
     id: 6,
-    name: "Channel i",
-    category: "Drama",
-    viewers: 7300,
-    color: "bg-purple-600",
-    emoji: "🎭",
+    name: "Somoy TV",
+    logo: "/assets/generated/ch-somoy.dim_120x120.png",
+    category: "News",
   },
   {
     id: 7,
-    name: "RTV",
-    category: "Entertainment",
-    viewers: 11000,
-    color: "bg-orange-500",
-    emoji: "🎬",
+    name: "Jamuna TV",
+    logo: "/assets/generated/ch-jamuna.dim_120x120.png",
+    category: "News",
   },
   {
     id: 8,
-    name: "Somoy TV",
-    category: "News",
-    viewers: 19500,
-    color: "bg-indigo-600",
-    emoji: "📰",
+    name: "Desh TV",
+    logo: "/assets/generated/ch-desh.dim_120x120.png",
+    category: "Entertainment",
   },
   {
     id: 9,
-    name: "Maasranga TV",
-    category: "Drama",
-    viewers: 6700,
-    color: "bg-pink-500",
-    emoji: "🎥",
+    name: "Boishakhi TV",
+    logo: "/assets/generated/ch-boishakhi.dim_120x120.png",
+    category: "Entertainment",
   },
   {
     id: 10,
-    name: "NTV BD",
+    name: "Maasranga TV",
+    logo: "/assets/generated/ch-maasranga.dim_120x120.png",
     category: "Entertainment",
-    viewers: 14200,
-    color: "bg-teal-500",
-    emoji: "📻",
   },
   {
     id: 11,
-    name: "Bangla Vision",
-    category: "Entertainment",
-    viewers: 8100,
-    color: "bg-cyan-600",
-    emoji: "🌟",
+    name: "GTV",
+    logo: "/assets/generated/ch-gtv.dim_120x120.png",
+    category: "Sports",
   },
   {
     id: 12,
-    name: "SA TV",
-    category: "Islamic",
-    viewers: 4500,
-    color: "bg-green-500",
-    emoji: "☪️",
+    name: "Independent TV",
+    logo: "/assets/generated/ch-independent.dim_120x120.png",
+    category: "News",
   },
 ];
 
 export default function TVPage({
   navigate,
 }: { navigate: (p: AppPage) => void }) {
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const filtered =
+    activeCategory === "All"
+      ? CHANNELS
+      : CHANNELS.filter((ch) => ch.category === activeCategory);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#FF6B00] px-4 pt-10 pb-4">
-        <div className="flex items-center gap-3 mb-4">
-          <Tv size={26} className="text-white" />
-          <h1 className="text-white text-xl font-bold">Live TV</h1>
+      <div className="orange-gradient px-4 pt-12 pb-5 flex-none">
+        <div className="flex items-center gap-3 mb-5">
+          <button
+            type="button"
+            onClick={() => navigate({ name: "home" })}
+            className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
+            data-ocid="tv.close_button"
+          >
+            <ArrowLeft size={20} className="text-white" />
+          </button>
+          <h1 className="text-white text-xl font-bold flex-1">
+            📺 TV Channels
+          </h1>
         </div>
+
         {/* Category tabs */}
         <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               type="button"
-              className="px-3 py-1.5 rounded-full bg-white/20 text-white text-sm font-medium whitespace-nowrap"
+              onClick={() => setActiveCategory(cat)}
+              className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+                activeCategory === cat
+                  ? "bg-white text-primary shadow-sm"
+                  : "bg-white/20 text-white"
+              }`}
               data-ocid={`tv.${cat.toLowerCase()}.tab`}
             >
               {cat}
@@ -137,40 +129,54 @@ export default function TVPage({
         </div>
       </div>
 
-      {/* Channel Grid */}
-      <div className="flex-1 overflow-y-auto pb-24 p-3">
-        <div className="grid grid-cols-2 gap-3">
-          {CHANNELS.map((ch, i) => (
+      {/* Channel grid */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="grid grid-cols-3 gap-3">
+          {filtered.map((ch, i) => (
             <button
               key={ch.id}
               type="button"
-              className="bg-white rounded-2xl overflow-hidden shadow-sm text-left active:scale-95 transition-transform"
+              onClick={() => toast.info(`${ch.name} — Coming Soon! 🎬`)}
+              className="bg-white rounded-2xl overflow-hidden shadow-card flex flex-col items-center pb-3 active:scale-95 transition-transform"
               data-ocid={`tv.item.${i + 1}`}
             >
-              {/* Thumbnail */}
-              <div
-                className={`${ch.color} h-28 flex items-center justify-center`}
-              >
-                <span className="text-5xl">{ch.emoji}</span>
+              <div className="w-full aspect-square bg-gray-50 flex items-center justify-center p-2">
+                <img
+                  src={ch.logo}
+                  alt={ch.name}
+                  className="w-full h-full object-contain rounded-xl"
+                />
               </div>
-              <div className="p-2.5">
-                <p className="font-semibold text-gray-800 text-sm truncate">
-                  {ch.name}
-                </p>
-                <p className="text-xs text-gray-400">{ch.category}</p>
-                <div className="flex items-center gap-1 mt-1">
-                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  <span className="text-xs text-gray-500">
-                    {ch.viewers.toLocaleString()} watching
-                  </span>
-                </div>
-              </div>
+              <p className="text-xs font-bold text-gray-800 text-center mt-1 px-1 leading-tight">
+                {ch.name}
+              </p>
             </button>
           ))}
         </div>
+
+        {filtered.length === 0 && (
+          <div
+            className="text-center py-16 text-muted-foreground"
+            data-ocid="tv.empty_state"
+          >
+            <p className="text-4xl mb-3">📺</p>
+            <p className="font-semibold">No channels in this category</p>
+          </div>
+        )}
       </div>
 
-      <BottomNav navigate={navigate} active="tv" />
+      {/* Footer */}
+      <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
+        © {new Date().getFullYear()}. Built with ❤️ using{" "}
+        <a
+          href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+          className="underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          caffeine.ai
+        </a>
+      </footer>
     </div>
   );
 }
