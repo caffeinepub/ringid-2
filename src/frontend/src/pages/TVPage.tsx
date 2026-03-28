@@ -1,125 +1,139 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { X } from "lucide-react";
 import { useState } from "react";
-import { toast } from "sonner";
 import type { AppPage } from "../App";
 
 const CATEGORIES = ["All", "News", "Entertainment", "Sports", "Religious"];
 
 const CHANNELS = [
   {
-    id: 1,
-    name: "BTV",
-    logo: "/assets/generated/ch-btv.dim_120x120.png",
-    category: "Entertainment",
-  },
-  {
     id: 2,
     name: "Channel i",
     logo: "/assets/generated/ch-channeli.dim_120x120.png",
     category: "Entertainment",
+    liveId: "ZnNLIRi75bQ",
   },
   {
     id: 3,
     name: "ATN Bangla",
     logo: "/assets/generated/ch-atn.dim_120x120.png",
     category: "Entertainment",
+    liveId: "5nz-S0H_ltA",
   },
   {
     id: 4,
     name: "NTV",
     logo: "/assets/generated/ch-ntv.dim_120x120.png",
     category: "News",
+    liveId: "KjQWFOPLf8Y",
   },
   {
     id: 5,
     name: "Rtv",
     logo: "/assets/generated/ch-rtv.dim_120x120.png",
     category: "Entertainment",
+    liveId: "Tef0Mdg-Sig",
   },
   {
     id: 6,
     name: "Somoy TV",
     logo: "/assets/generated/ch-somoy.dim_120x120.png",
     category: "News",
+    liveId: "23gFzkBnNrM",
   },
   {
     id: 7,
     name: "Jamuna TV",
     logo: "/assets/generated/ch-jamuna.dim_120x120.png",
     category: "News",
+    liveId: "rmcwWzBmUws",
   },
   {
     id: 8,
     name: "Desh TV",
     logo: "/assets/generated/ch-desh.dim_120x120.png",
     category: "Entertainment",
+    liveId: "qgBSe1Gn1Cc",
   },
   {
     id: 9,
     name: "Boishakhi TV",
     logo: "/assets/generated/ch-boishakhi.dim_120x120.png",
     category: "Entertainment",
+    liveId: null,
   },
   {
     id: 10,
     name: "Maasranga TV",
     logo: "/assets/generated/ch-maasranga.dim_120x120.png",
     category: "Entertainment",
+    liveId: null,
   },
   {
     id: 11,
     name: "GTV",
     logo: "/assets/generated/ch-gtv.dim_120x120.png",
     category: "Sports",
+    liveId: null,
   },
   {
     id: 12,
     name: "Independent TV",
     logo: "/assets/generated/ch-independent.dim_120x120.png",
     category: "News",
+    liveId: null,
   },
   {
     id: 13,
     name: "Ekattor TV",
     logo: "/assets/generated/ch-ekattor.dim_120x120.png",
     category: "News",
+    liveId: null,
   },
   {
     id: 14,
     name: "SA TV",
     logo: "/assets/generated/ch-satv.dim_120x120.png",
     category: "Entertainment",
+    liveId: null,
   },
   {
     id: 15,
     name: "Bangla Vision",
     logo: "/assets/generated/ch-banglavision.dim_120x120.png",
     category: "Entertainment",
+    liveId: null,
   },
   {
     id: 16,
     name: "Islamic TV",
     logo: "/assets/generated/ch-islamictv.dim_120x120.png",
     category: "Religious",
+    liveId: null,
   },
   {
     id: 17,
     name: "Peace TV",
     logo: "/assets/generated/ch-peacetv.dim_120x120.png",
     category: "Religious",
+    liveId: null,
   },
   {
     id: 18,
     name: "T Sports",
     logo: "/assets/generated/ch-tsports.dim_120x120.png",
     category: "Sports",
+    liveId: null,
   },
 ];
+
+type Channel = (typeof CHANNELS)[number];
 
 export default function TVPage({
   navigate: _navigate,
 }: { navigate: (p: AppPage) => void }) {
   const [activeCategory, setActiveCategory] = useState("All");
+  const [playing, setPlaying] = useState<Channel | null>(null);
 
   const filtered =
     activeCategory === "All"
@@ -128,6 +142,46 @@ export default function TVPage({
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
+      {/* Full-screen player overlay */}
+      {playing && (
+        <div className="fixed inset-0 z-50 bg-black flex flex-col">
+          {/* Player header */}
+          <div className="flex items-center gap-3 px-4 py-3 bg-black">
+            <img
+              src={playing.logo}
+              alt={playing.name}
+              className="w-8 h-8 object-contain rounded"
+            />
+            <span className="text-white font-bold text-base flex-1">
+              {playing.name}
+            </span>
+            <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+              LIVE
+            </span>
+            <button
+              type="button"
+              onClick={() => setPlaying(null)}
+              className="text-white ml-2 p-1"
+              data-ocid="tv.player.close"
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Embedded player */}
+          <div className="flex-1 relative">
+            <iframe
+              key={playing.liveId}
+              src={`https://www.youtube.com/embed/${playing.liveId}?autoplay=1&modestbranding=1&rel=0&iv_load_policy=3&controls=1&playsinline=1`}
+              className="w-full h-full"
+              allow="autoplay; encrypted-media; fullscreen"
+              allowFullScreen
+              title={playing.name}
+            />
+          </div>
+        </div>
+      )}
+
       {/* Category filter */}
       <div className="bg-white border-b border-gray-100 px-3 py-2.5">
         <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-0.5">
@@ -156,10 +210,19 @@ export default function TVPage({
               <button
                 key={ch.id}
                 type="button"
-                onClick={() => toast.info(`${ch.name} — Coming Soon! 🎬`)}
-                className="bg-white rounded-2xl overflow-hidden shadow-card flex flex-col items-center pb-3 active:scale-95 transition-transform"
+                onClick={() => {
+                  if (ch.liveId) {
+                    setPlaying(ch);
+                  }
+                }}
+                className="bg-white rounded-2xl overflow-hidden shadow-card flex flex-col items-center pb-3 active:scale-95 transition-transform relative"
                 data-ocid={`tv.item.${i + 1}`}
               >
+                {ch.liveId && (
+                  <span className="absolute top-2 right-2 bg-red-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded z-10">
+                    LIVE
+                  </span>
+                )}
                 <div className="w-full aspect-square bg-gray-50 flex items-center justify-center p-2">
                   <img
                     src={ch.logo}
