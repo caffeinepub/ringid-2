@@ -24,6 +24,7 @@ import {
 import { CreditCard, Lock, ShoppingCart } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import SplashScreen from "./components/SplashScreen";
 import { useInternetIdentity } from "./hooks/useInternetIdentity";
 import AppsPage from "./pages/AppsPage";
 import ChatPage from "./pages/ChatPage";
@@ -58,6 +59,7 @@ const MAIN_TABS = [
 
 export default function App() {
   const { identity, isInitializing } = useInternetIdentity();
+  const [showSplash, setShowSplash] = useState(true);
   const [page, setPage] = useState<AppPage>({ name: "home" });
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -82,6 +84,14 @@ export default function App() {
   const activeTab = isMainPage
     ? (page.name as "home" | "livetab" | "tv" | "chat" | "apps")
     : "home";
+
+  if (showSplash) {
+    return (
+      <AnimatePresence>
+        <SplashScreen onDone={() => setShowSplash(false)} />
+      </AnimatePresence>
+    );
+  }
 
   if (isInitializing) {
     return (
