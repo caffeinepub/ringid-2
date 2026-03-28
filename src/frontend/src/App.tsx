@@ -7,6 +7,7 @@ import {
   Camera,
   Grid,
   Home,
+  LogOut,
   MapPin,
   Menu,
   MessageCircle,
@@ -25,7 +26,7 @@ import { CreditCard, Lock, ShoppingCart } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import SplashScreen from "./components/SplashScreen";
-import { useInternetIdentity } from "./hooks/useInternetIdentity";
+import { usePhoneAuth } from "./hooks/usePhoneAuth";
 import AppsPage from "./pages/AppsPage";
 import ChatPage from "./pages/ChatPage";
 import HomePage from "./pages/HomePage";
@@ -58,7 +59,7 @@ const MAIN_TABS = [
 ];
 
 export default function App() {
-  const { identity, isInitializing } = useInternetIdentity();
+  const { session, isLoading, logout } = usePhoneAuth();
   const [showSplash, setShowSplash] = useState(true);
   const [page, setPage] = useState<AppPage>({ name: "home" });
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -67,16 +68,15 @@ export default function App() {
   const [notifOpen, setNotifOpen] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
 
-  const principal = identity?.getPrincipal().toString() ?? "";
-  const userId = principal
+  const userId = session
     ? Math.abs(
-        (principal.split("").reduce((a, c) => a + c.charCodeAt(0), 0) %
+        (session.phone.split("").reduce((a, c) => a + c.charCodeAt(0), 0) %
           9000000) +
           1000000,
       ).toString()
     : "2415 5412";
-  const userInitial = principal ? principal[0].toUpperCase() : "U";
-  const userName = principal ? `User ${principal.slice(0, 6)}` : "Uptodown";
+  const userName = session?.name ?? "User";
+  const userInitial = userName[0]?.toUpperCase() ?? "U";
 
   const isMainPage = ["home", "livetab", "tv", "chat", "apps"].includes(
     page.name,
@@ -93,7 +93,7 @@ export default function App() {
     );
   }
 
-  if (isInitializing) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent animate-spin" />
@@ -101,7 +101,7 @@ export default function App() {
     );
   }
 
-  if (!identity) {
+  if (!session) {
     return (
       <>
         <LoginPage />
@@ -214,7 +214,7 @@ export default function App() {
                     </button>
                   </div>
                   {/* Menu items */}
-                  <div className="mx-3 mt-3 bg-white rounded-2xl shadow-card overflow-hidden mb-6">
+                  <div className="mx-3 mt-3 bg-white rounded-2xl shadow-card overflow-hidden mb-4">
                     {[
                       {
                         icon: Users,
@@ -275,6 +275,22 @@ export default function App() {
                         </span>
                       </button>
                     ))}
+                  </div>
+
+                  {/* Logout button */}
+                  <div className="mx-3 mb-6">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        setDrawerOpen(false);
+                      }}
+                      className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 rounded-xl py-3.5 font-bold text-sm hover:bg-red-100 transition-colors border border-red-200"
+                      data-ocid="home.drawer.logout.button"
+                    >
+                      <LogOut size={16} />
+                      Log Out
+                    </button>
                   </div>
                 </div>
               </motion.div>
