@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 const ACCOUNTS_KEY = "ringid_accounts";
 const SESSION_KEY = "ringid_session";
+const SESSION_EVENT = "ringid_session_change";
 
 type Account = { passwordHash: string; name: string };
 type Session = { phone: string; name: string };
@@ -29,11 +30,16 @@ function getSession(): Session | null {
 export function usePhoneAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [currentOtp, setCurrentOtp] = useState<string | null>(null);
 
   useEffect(() => {
     setSession(getSession());
     setIsLoading(false);
+
+    function onSessionChange() {
+      setSession(getSession());
+    }
+    window.addEventListener(SESSION_EVENT, onSessionChange);
+    return () => window.removeEventListener(SESSION_EVENT, onSessionChange);
   }, []);
 
   const register = useCallback(
@@ -72,18 +78,13 @@ export function usePhoneAuth() {
     const sess: Session = { phone, name };
     localStorage.setItem(SESSION_KEY, JSON.stringify(sess));
     setSession(sess);
+    window.dispatchEvent(new CustomEvent(SESSION_EVENT));
   }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem(SESSION_KEY);
     setSession(null);
-    setCurrentOtp(null);
-  }, []);
-
-  const generateOtp = useCallback((): string => {
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    setCurrentOtp(otp);
-    return otp;
+    window.dispatchEvent(new CustomEvent(SESSION_EVENT));
   }, []);
 
   return {
@@ -93,7 +94,5 @@ export function usePhoneAuth() {
     login,
     saveSession,
     logout,
-    generateOtp,
-    currentOtp,
   };
 }
