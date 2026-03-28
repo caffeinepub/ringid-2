@@ -19,15 +19,15 @@ export default function LoginPage() {
             }}
           />
           <motion.div
-            className="w-24 h-24 rounded-3xl shadow-orange overflow-hidden border-4 border-white/40"
+            className="w-28 h-28 bg-transparent shadow-orange"
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 18 }}
           >
             <img
-              src="/assets/generated/ringid-logo.dim_120x120.png"
+              src="/assets/uploads/12941_4-77548173-logo-019d3586-2fad-7059-b460-6fe62defa3cb-1.webp"
               alt="RingID 2"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           </motion.div>
           <motion.div

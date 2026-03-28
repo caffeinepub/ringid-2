@@ -11,13 +11,13 @@ import {
   Menu,
   MessageCircle,
   QrCode,
+  Radio,
   Search,
   Settings,
   Stethoscope,
   TrendingUp,
   Tv,
   Users,
-  Video,
   Wallet,
   X,
 } from "lucide-react";
@@ -29,14 +29,14 @@ import AppsPage from "./pages/AppsPage";
 import ChatPage from "./pages/ChatPage";
 import HomePage from "./pages/HomePage";
 import LiveRoomPage from "./pages/LiveRoomPage";
+import LiveTabPage from "./pages/LiveTabPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import TVPage from "./pages/TVPage";
-import VideoPage from "./pages/VideoPage";
 
 export type AppPage =
   | { name: "home" }
-  | { name: "video" }
+  | { name: "livetab" }
   | { name: "tv" }
   | { name: "chat" }
   | { name: "apps" }
@@ -50,7 +50,7 @@ export type AppPage =
 
 const MAIN_TABS = [
   { name: "home" as const, label: "Home", icon: Home },
-  { name: "video" as const, label: "Video", icon: Video },
+  { name: "livetab" as const, label: "Live", icon: Radio },
   { name: "tv" as const, label: "TV", icon: Tv },
   { name: "chat" as const, label: "Chat", icon: MessageCircle },
   { name: "apps" as const, label: "Apps", icon: Grid },
@@ -76,20 +76,12 @@ export default function App() {
   const userInitial = principal ? principal[0].toUpperCase() : "U";
   const userName = principal ? `User ${principal.slice(0, 6)}` : "Uptodown";
 
-  const isMainPage = ["home", "video", "tv", "chat", "apps"].includes(
+  const isMainPage = ["home", "livetab", "tv", "chat", "apps"].includes(
     page.name,
   );
   const activeTab = isMainPage
-    ? (page.name as "home" | "video" | "tv" | "chat" | "apps")
+    ? (page.name as "home" | "livetab" | "tv" | "chat" | "apps")
     : "home";
-
-  const pageTitles: Record<string, string> = {
-    home: "Home",
-    video: "Video",
-    tv: "TV",
-    chat: "Messages",
-    apps: "Apps",
-  };
 
   if (isInitializing) {
     return (
@@ -397,9 +389,11 @@ export default function App() {
                 </button>
               </div>
 
-              <span className="font-bold text-lg">
-                {pageTitles[activeTab] ?? "Home"}
-              </span>
+              <img
+                src="/assets/uploads/12941_4-77548173-logo-019d3586-2fad-7059-b460-6fe62defa3cb-1.webp"
+                alt="RingID"
+                className="h-8 object-contain"
+              />
 
               <div className="flex items-center gap-0.5">
                 <button
@@ -461,7 +455,7 @@ export default function App() {
               userInitial={userInitial}
             />
           )}
-          {page.name === "video" && <VideoPage navigate={setPage} />}
+          {page.name === "livetab" && <LiveTabPage navigate={setPage} />}
           {page.name === "tv" && <TVPage navigate={setPage} />}
           {page.name === "chat" && <ChatPage navigate={setPage} />}
           {page.name === "apps" && <AppsPage navigate={setPage} />}
