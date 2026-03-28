@@ -1,5 +1,5 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
-  ArrowLeft,
   Briefcase,
   Heart,
   MapPin,
@@ -80,26 +80,11 @@ const APPS = [
 ];
 
 export default function AppsPage({
-  navigate,
+  navigate: _navigate,
 }: { navigate: (p: AppPage) => void }) {
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
-      <header className="orange-gradient px-4 pt-12 pb-6 flex-none">
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => navigate({ name: "home" })}
-            className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
-            data-ocid="apps.close_button"
-          >
-            <ArrowLeft size={20} className="text-white" />
-          </button>
-          <h1 className="text-white text-xl font-bold">Apps</h1>
-        </div>
-      </header>
-
-      <div className="flex-1 overflow-y-auto p-4">
+    <ScrollArea className="h-full bg-gray-50">
+      <div className="p-4">
         <div className="grid grid-cols-3 gap-3">
           {APPS.map((app, i) => (
             <motion.button
@@ -139,6 +124,6 @@ export default function AppsPage({
           caffeine.ai
         </a>
       </footer>
-    </div>
+    </ScrollArea>
   );
 }

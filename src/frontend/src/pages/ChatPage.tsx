@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowLeft, MessageCircle, Phone, Search, Video } from "lucide-react";
+import { MessageCircle, Phone, Search, Video } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -75,7 +74,7 @@ const CONTACTS = [
 ];
 
 export default function ChatPage({
-  navigate,
+  navigate: _navigate,
 }: { navigate: (p: AppPage) => void }) {
   const [search, setSearch] = useState("");
 
@@ -84,35 +83,23 @@ export default function ChatPage({
   );
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
-      {/* Header */}
-      <header className="orange-gradient px-4 pt-12 pb-4 flex-none">
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            type="button"
-            onClick={() => navigate({ name: "home" })}
-            className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
-            data-ocid="chat.close_button"
-          >
-            <ArrowLeft size={20} className="text-white" />
-          </button>
-          <h1 className="text-white text-xl font-bold flex-1">💬 Messages</h1>
-          <span className="text-white/80 text-sm">{CONTACTS.length}</span>
-        </div>
+    <div className="flex flex-col h-full bg-gray-50">
+      {/* Search bar */}
+      <div className="bg-white px-3 py-2.5 border-b border-gray-100">
         <div className="relative">
           <Search
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-white/60"
+            size={15}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
           />
           <input
             placeholder="Search messages..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white/20 text-white placeholder:text-white/60 rounded-full pl-9 pr-4 py-2.5 text-sm outline-none"
+            className="w-full bg-gray-100 rounded-full pl-9 pr-4 py-2 text-sm outline-none"
             data-ocid="chat.search_input"
           />
         </div>
-      </header>
+      </div>
 
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-1">
@@ -141,7 +128,6 @@ export default function ChatPage({
                   </span>
                 )}
               </div>
-
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
                   <span className="font-semibold text-sm text-foreground">
@@ -155,7 +141,6 @@ export default function ChatPage({
                   {contact.lastMsg}
                 </p>
               </div>
-
               <div className="flex gap-1.5 flex-none">
                 <button
                   type="button"
@@ -182,7 +167,6 @@ export default function ChatPage({
               </div>
             </motion.button>
           ))}
-
           {filtered.length === 0 && (
             <div className="text-center py-16" data-ocid="chat.empty_state">
               <MessageCircle
@@ -193,19 +177,19 @@ export default function ChatPage({
             </div>
           )}
         </div>
-      </ScrollArea>
 
-      <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
-        © {new Date().getFullYear()}. Built with ❤️ using{" "}
-        <a
-          href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
-          className="underline"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          caffeine.ai
-        </a>
-      </footer>
+        <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
+          © {new Date().getFullYear()}. Built with ❤️ using{" "}
+          <a
+            href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
+            className="underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            caffeine.ai
+          </a>
+        </footer>
+      </ScrollArea>
     </div>
   );
 }
