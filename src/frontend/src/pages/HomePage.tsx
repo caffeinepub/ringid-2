@@ -21,6 +21,7 @@ import {
   QrCode,
   Share2,
   ShoppingCart,
+  Stethoscope,
   User,
   Wallet,
   X,
@@ -324,33 +325,106 @@ export default function HomePage({
             </div>
           </div>
 
-          {/* COVID-19 cards */}
-          <div className="px-3 mb-2 grid grid-cols-2 gap-2">
-            <div className="bg-gray-800 rounded-2xl p-3.5 flex flex-col gap-2">
-              <div className="text-2xl">🦠</div>
-              <p className="text-gray-300 text-[11px]">করোনা ভাইরাস</p>
-              <p className="text-white font-bold text-base">COVID-19</p>
-              <button
-                type="button"
-                className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg w-fit"
-                onClick={() => toast.info("COVID-19 Update")}
-                data-ocid="home.covid_update.button"
-              >
-                UPDATE
-              </button>
-            </div>
-            <div className="bg-gray-800 rounded-2xl p-3.5 flex flex-col gap-2">
-              <div className="text-2xl">🦠</div>
-              <p className="text-gray-300 text-[11px]">করোনা ভাইরাস</p>
-              <p className="text-white font-bold text-base">COVID-19</p>
-              <button
-                type="button"
-                className="bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg w-fit"
-                onClick={() => toast.info("তথ্য কেন্দ্র")}
-                data-ocid="home.covid_info.button"
-              >
-                তথ্য কেন্দ্র
-              </button>
+          {/* Services grid */}
+          <div className="px-3 mb-2">
+            <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+              <div className="grid grid-cols-3 gap-2">
+                {/* ইসলামিক ফলার */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("ইসলামিক ফলার")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  data-ocid="home.islamic.button"
+                >
+                  <span className="text-2xl">🌙</span>
+                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                    ইসলামিক ফলার
+                  </span>
+                </button>
+
+                {/* Community Jobs */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("Community Jobs")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  data-ocid="home.community_jobs.button"
+                >
+                  <div className="w-8 h-8 rounded-md bg-green-500 flex items-center justify-center">
+                    <Heart size={16} className="text-white" fill="white" />
+                  </div>
+                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                    Community Jobs
+                  </span>
+                </button>
+
+                {/* Doctors */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("Doctors")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  data-ocid="home.doctors.button"
+                >
+                  <Stethoscope size={26} className="text-teal-600" />
+                  <span className="text-[10px] font-semibold text-teal-700 text-center leading-tight">
+                    Doctors
+                  </span>
+                </button>
+
+                {/* Ring Agent */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("Ring Agent")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  data-ocid="home.ring_agent.button"
+                >
+                  <div className="flex items-baseline gap-0.5">
+                    <span className="text-primary font-black text-sm">
+                      ring
+                    </span>
+                    <span className="text-blue-900 font-black text-sm">
+                      agent
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                    Ring Agent
+                  </span>
+                </button>
+
+                {/* Notice */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("Notice")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors relative"
+                  data-ocid="home.notice.button"
+                >
+                  <div className="relative">
+                    <div className="w-8 h-8 rounded-md bg-yellow-400 flex items-center justify-center">
+                      <span className="text-yellow-900 font-black text-xs">
+                        !
+                      </span>
+                    </div>
+                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
+                  </div>
+                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                    Notice
+                  </span>
+                </button>
+
+                {/* More */}
+                <button
+                  type="button"
+                  onClick={() => toast.info("More")}
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  data-ocid="home.more.button"
+                >
+                  <span className="text-primary font-black text-lg leading-none">
+                    »»
+                  </span>
+                  <span className="text-[10px] font-semibold text-primary text-center leading-tight">
+                    More &gt;&gt;&gt;
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
 
