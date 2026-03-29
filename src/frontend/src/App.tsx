@@ -100,7 +100,7 @@ export default function App() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
-        <div className="w-10 h-10 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+        <div className="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin" />
       </div>
     );
   }
@@ -129,33 +129,31 @@ export default function App() {
                 onClick={() => setDrawerOpen(false)}
               />
               <motion.div
-                className="fixed top-0 left-0 bottom-0 z-50 w-[300px] bg-white flex flex-col shadow-2xl overflow-hidden"
-                initial={{ x: -300 }}
+                className="fixed top-0 left-0 bottom-0 z-50 w-[320px] bg-white flex flex-col shadow-2xl overflow-hidden"
+                initial={{ x: -320 }}
                 animate={{ x: 0 }}
-                exit={{ x: -300 }}
+                exit={{ x: -320 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 data-ocid="home.drawer.panel"
               >
                 {/* Drawer header */}
-                <div className="orange-gradient px-5 pt-12 pb-6">
+                <div className="orange-gradient px-6 pt-14 pb-7">
                   <div className="flex items-start gap-4">
-                    <div className="w-20 h-20 rounded-full bg-white/30 border-2 border-white/60 flex items-center justify-center flex-none">
-                      <span className="text-white font-bold text-3xl">
+                    <div className="w-24 h-24 rounded-full bg-white/30 border-2 border-white/60 flex items-center justify-center flex-none">
+                      <span className="text-white font-bold text-4xl">
                         {userInitial}
                       </span>
                     </div>
                     <div className="flex-1 pt-2">
-                      <p className="text-white font-bold text-base">
-                        {userName}
-                      </p>
-                      <p className="text-white/80 text-sm mt-0.5">
+                      <p className="text-white font-bold text-lg">{userName}</p>
+                      <p className="text-white/80 text-base mt-0.5">
                         ID: #{userId}
                       </p>
                       <div className="flex gap-2 mt-2">
-                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
+                        <span className="bg-white/20 text-white text-sm px-3 py-1 rounded-full">
                           🪙 {coins.toLocaleString()}
                         </span>
-                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
+                        <span className="bg-white/20 text-white text-sm px-3 py-1 rounded-full">
                           🥇 {goldCoins.toLocaleString()}
                         </span>
                       </div>
@@ -166,9 +164,9 @@ export default function App() {
                 <div className="flex-1 overflow-y-auto bg-gray-50">
                   {/* Wallet */}
                   <div className="mx-3 mt-3 bg-white rounded-2xl shadow-card overflow-hidden">
-                    <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-100">
-                      <Wallet size={18} className="text-primary" />
-                      <span className="font-bold text-sm">Wallet</span>
+                    <div className="flex items-center gap-2 px-4 py-4 border-b border-gray-100">
+                      <Wallet size={22} className="text-primary" />
+                      <span className="font-bold text-base">Wallet</span>
                     </div>
                     <div className="grid grid-cols-3 divide-x divide-gray-100">
                       {[
@@ -197,12 +195,12 @@ export default function App() {
                         <button
                           key={label}
                           type="button"
-                          className="flex flex-col items-center gap-1.5 py-4 hover:bg-accent transition-colors"
+                          className="flex flex-col items-center gap-2 py-5 hover:bg-accent transition-colors"
                           data-ocid={ocid}
                           onClick={action}
                         >
-                          <Icon size={20} className="text-primary" />
-                          <span className="text-xs text-muted-foreground font-medium">
+                          <Icon size={24} className="text-primary" />
+                          <span className="text-sm text-muted-foreground font-medium">
                             {label}
                           </span>
                         </button>
@@ -217,10 +215,10 @@ export default function App() {
                         setDrawerOpen(false);
                         setPage({ name: "profile" });
                       }}
-                      className="w-full text-white rounded-xl py-3.5 flex items-center justify-center gap-2 font-bold text-sm shadow-orange transition-opacity hover:opacity-90 orange-gradient"
+                      className="w-full text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold text-base shadow-orange transition-opacity hover:opacity-90 orange-gradient"
                       data-ocid="home.drawer.mypage.button"
                     >
-                      <Lock size={16} />
+                      <Lock size={20} />
                       My Page
                     </button>
                   </div>
@@ -273,15 +271,15 @@ export default function App() {
                       <button
                         key={label}
                         type="button"
-                        className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-gray-50 transition-colors ${i < 5 ? "border-b border-gray-100" : ""}`}
+                        className={`w-full flex items-center gap-3 px-4 py-4 hover:bg-gray-50 transition-colors ${i < 5 ? "border-b border-gray-100" : ""}`}
                         data-ocid={ocid}
                       >
                         <div
-                          className={`w-9 h-9 rounded-full ${bg} flex items-center justify-center flex-none`}
+                          className={`w-11 h-11 rounded-full ${bg} flex items-center justify-center flex-none`}
                         >
-                          <Icon size={17} className={color} />
+                          <Icon size={20} className={color} />
                         </div>
-                        <span className="text-sm font-medium text-foreground">
+                        <span className="text-base font-medium text-foreground">
                           {label}
                         </span>
                       </button>
@@ -296,10 +294,10 @@ export default function App() {
                         logout();
                         setDrawerOpen(false);
                       }}
-                      className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 rounded-xl py-3.5 font-bold text-sm hover:bg-red-100 transition-colors border border-red-200"
+                      className="w-full flex items-center justify-center gap-2 bg-red-50 text-red-600 rounded-xl py-4 font-bold text-base hover:bg-red-100 transition-colors border border-red-200"
                       data-ocid="home.drawer.logout.button"
                     >
-                      <LogOut size={16} />
+                      <LogOut size={20} />
                       Log Out
                     </button>
                   </div>
@@ -316,10 +314,10 @@ export default function App() {
             <AnimatePresence>
               {searchOpen && (
                 <motion.div
-                  className="absolute top-0 left-0 right-0 z-30 bg-white px-3 h-14 flex items-center gap-2 shadow-md"
-                  initial={{ y: -56 }}
+                  className="absolute top-0 left-0 right-0 z-30 bg-white px-3 h-16 flex items-center gap-2 shadow-md"
+                  initial={{ y: -64 }}
                   animate={{ y: 0 }}
-                  exit={{ y: -56 }}
+                  exit={{ y: -64 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
                   <Input
@@ -327,7 +325,7 @@ export default function App() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search..."
-                    className="flex-1"
+                    className="flex-1 h-12 text-base"
                     data-ocid="home.search_input"
                   />
                   <button
@@ -335,7 +333,7 @@ export default function App() {
                     onClick={() => setSearchOpen(false)}
                     data-ocid="home.close_button"
                   >
-                    <X size={22} className="text-muted-foreground" />
+                    <X size={26} className="text-muted-foreground" />
                   </button>
                 </motion.div>
               )}
@@ -350,15 +348,15 @@ export default function App() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
                 >
-                  <div className="flex items-center justify-between px-4 py-3 border-b">
-                    <span className="font-bold">Notifications</span>
+                  <div className="flex items-center justify-between px-4 py-4 border-b">
+                    <span className="font-bold text-lg">Notifications</span>
                     <button type="button" onClick={() => setNotifOpen(false)}>
-                      <X size={20} className="text-muted-foreground" />
+                      <X size={24} className="text-muted-foreground" />
                     </button>
                   </div>
-                  <div className="px-4 py-8 text-center text-muted-foreground">
-                    <Bell size={36} className="mx-auto mb-2 opacity-30" />
-                    <p className="text-sm">No new notifications</p>
+                  <div className="px-4 py-10 text-center text-muted-foreground">
+                    <Bell size={44} className="mx-auto mb-2 opacity-30" />
+                    <p className="text-base">No new notifications</p>
                   </div>
                 </motion.div>
               )}
@@ -374,30 +372,30 @@ export default function App() {
                   exit={{ opacity: 0 }}
                 >
                   <motion.div
-                    className="bg-white rounded-2xl p-6 mx-6 w-full max-w-[320px] shadow-xl"
+                    className="bg-white rounded-2xl p-6 mx-6 w-full max-w-[340px] shadow-xl"
                     initial={{ scale: 0.9 }}
                     animate={{ scale: 1 }}
                     exit={{ scale: 0.9 }}
                     data-ocid="home.modal"
                   >
                     <div className="flex items-center justify-between mb-4">
-                      <span className="font-bold text-lg">Your QR Code</span>
+                      <span className="font-bold text-xl">Your QR Code</span>
                       <button
                         type="button"
                         onClick={() => setQrOpen(false)}
                         data-ocid="home.close_button"
                       >
-                        <X size={20} className="text-muted-foreground" />
+                        <X size={24} className="text-muted-foreground" />
                       </button>
                     </div>
                     <div className="flex flex-col items-center">
-                      <div className="w-40 h-40 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                        <QrCode size={80} className="text-primary" />
+                      <div className="w-48 h-48 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
+                        <QrCode size={96} className="text-primary" />
                       </div>
-                      <p className="text-sm text-muted-foreground">
+                      <p className="text-base text-muted-foreground">
                         ID: #{userId}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         Share your QR to connect
                       </p>
                     </div>
@@ -407,47 +405,43 @@ export default function App() {
             </AnimatePresence>
 
             {/* Header row */}
-            <div className="flex items-center justify-between px-3 h-14">
+            <div className="flex items-center justify-between px-3 h-16">
               <div className="flex items-center gap-1">
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                  className="p-2.5 rounded-full hover:bg-accent transition-colors"
                   onClick={() => setDrawerOpen(true)}
                   data-ocid="home.menu_button"
                 >
-                  <Menu size={22} />
+                  <Menu size={26} />
                 </button>
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                  className="p-2.5 rounded-full hover:bg-accent transition-colors"
                   data-ocid="home.settings.button"
                 >
-                  <Settings size={20} className="text-foreground" />
+                  <Settings size={24} className="text-foreground" />
                 </button>
               </div>
 
-              <img
-                src="/assets/generated/rid2-logo.dim_400x400.png"
-                alt="RingID"
-                className="h-8 object-contain"
-              />
+              <span className="font-bold text-lg text-primary">RingID 2</span>
 
               <div className="flex items-center gap-0.5">
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                  className="p-2.5 rounded-full hover:bg-accent transition-colors"
                   onClick={() => setSearchOpen(true)}
                   data-ocid="home.search_input"
                 >
-                  <Search size={20} className="text-foreground" />
+                  <Search size={24} className="text-foreground" />
                 </button>
                 <button
                   type="button"
-                  className="p-2 rounded-full hover:bg-accent transition-colors"
+                  className="p-2.5 rounded-full hover:bg-accent transition-colors"
                   onClick={() => setNotifOpen(true)}
                   data-ocid="home.bell.button"
                 >
-                  <Bell size={20} className="text-foreground" />
+                  <Bell size={24} className="text-foreground" />
                 </button>
               </div>
             </div>
@@ -459,15 +453,15 @@ export default function App() {
                   key={name}
                   type="button"
                   onClick={() => setPage({ name } as AppPage)}
-                  className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 relative transition-colors ${
+                  className={`flex-1 flex flex-col items-center gap-1 py-3.5 relative transition-colors ${
                     activeTab === name
                       ? "text-primary"
                       : "text-muted-foreground"
                   }`}
                   data-ocid={`nav.${name}.tab`}
                 >
-                  <Icon size={18} />
-                  <span className="text-[10px] font-semibold">{label}</span>
+                  <Icon size={22} />
+                  <span className="text-xs font-semibold">{label}</span>
                   {activeTab === name && (
                     <motion.div
                       className="absolute bottom-0 left-2 right-2 h-[2.5px] bg-primary rounded-full"

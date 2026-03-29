@@ -108,7 +108,7 @@ function LiveTimer({ startTime }: { startTime: bigint }) {
     .padStart(2, "0");
   const s = (elapsed % 60).toString().padStart(2, "0");
   return (
-    <span className="text-xs text-white/80 tabular-nums">
+    <span className="text-base text-white/80 tabular-nums">
       {h}:{m}:{s}
     </span>
   );
@@ -167,25 +167,25 @@ export default function LiveTabPage({
     <ScrollArea className="h-full bg-gray-50">
       <div className="pb-8">
         {/* Go Live section */}
-        <div className="bg-white px-4 py-5 mb-3">
-          <h2 className="font-bold text-base mb-4 flex items-center gap-2">
-            <Radio size={18} className="text-red-500 animate-pulse" />
+        <div className="bg-white px-5 py-5 mb-3">
+          <h2 className="font-bold text-lg mb-4 flex items-center gap-3">
+            <Radio size={22} className="text-red-500 animate-pulse" />
             লাইভ শুরু করুন
           </h2>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             {/* Audio Live */}
             <button
               type="button"
               onClick={() => handleSelectType("audio")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-7 px-3 hover:border-primary active:scale-95 transition-all"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-7 px-4 hover:border-primary active:scale-95 transition-all"
               data-ocid="live.audio_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg">
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-lg">
                 <Mic size={30} className="text-white" />
               </div>
               <div className="text-center">
-                <p className="text-primary font-bold text-sm">Audio Live</p>
-                <p className="text-muted-foreground text-xs mt-0.5">
+                <p className="text-primary font-bold text-base">Audio Live</p>
+                <p className="text-muted-foreground text-base mt-0.5">
                   শুধু মাইক্রোফোন
                 </p>
               </div>
@@ -195,15 +195,15 @@ export default function LiveTabPage({
             <button
               type="button"
               onClick={() => handleSelectType("video")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-7 px-3 hover:border-primary active:scale-95 transition-all"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-7 px-4 hover:border-primary active:scale-95 transition-all"
               data-ocid="live.video_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-lg">
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-lg">
                 <Camera size={30} className="text-white" />
               </div>
               <div className="text-center">
-                <p className="text-primary font-bold text-sm">Video Live</p>
-                <p className="text-muted-foreground text-xs mt-0.5">
+                <p className="text-primary font-bold text-base">Video Live</p>
+                <p className="text-muted-foreground text-base mt-0.5">
                   ক্যামেরা + মাইক
                 </p>
               </div>
@@ -213,14 +213,14 @@ export default function LiveTabPage({
 
         {/* Live List */}
         <div className="bg-white">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-            <h2 className="font-bold text-sm flex items-center gap-2">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+            <h2 className="font-bold text-base flex items-center gap-3">
               <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
               এখন লাইভে আছেন ({rooms.length})
             </h2>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 p-3">
+          <div className="grid grid-cols-2 gap-4 p-4">
             {rooms.map((room, idx) => (
               <motion.button
                 key={room.id.toString()}
@@ -245,27 +245,27 @@ export default function LiveTabPage({
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
 
                 {/* LIVE badge */}
-                <div className="absolute top-2 left-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <div className="absolute top-2 left-2 bg-red-500 text-white text-base font-bold px-2 py-0.5 rounded-full flex items-center gap-2">
                   <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse" />
                   LIVE
                 </div>
 
                 {/* Viewer count */}
-                <div className="absolute top-2 right-2 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full">
+                <div className="absolute top-2 right-2 bg-black/50 text-white text-base px-2 py-0.5 rounded-full">
                   👁 {Number(room.viewerCount).toLocaleString()}
                 </div>
 
                 {/* Bottom info */}
                 <div className="absolute bottom-0 left-0 right-0 px-2.5 pb-2.5">
                   {/* Avatar + name row */}
-                  <div className="flex items-center gap-2 mb-1">
-                    <div className="w-8 h-8 rounded-full bg-primary border-2 border-white flex items-center justify-center flex-none">
-                      <span className="text-white text-xs font-bold">
+                  <div className="flex items-center gap-3 mb-1">
+                    <div className="w-11 h-11 rounded-full bg-primary border-2 border-white flex items-center justify-center flex-none">
+                      <span className="text-white text-base font-bold">
                         {room.hostName[0]}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-white font-bold text-xs truncate">
+                      <p className="text-white font-bold text-base truncate">
                         {room.hostName}
                       </p>
                       <LiveTimer startTime={room.startTime} />
@@ -274,7 +274,7 @@ export default function LiveTabPage({
                   {/* Join button */}
                   <button
                     type="button"
-                    className="w-full bg-primary text-white text-xs font-bold py-1.5 rounded-xl flex items-center justify-center gap-1"
+                    className="w-full bg-primary text-white text-base font-bold py-1.5 rounded-xl flex items-center justify-center gap-2"
                     data-ocid={`live.join.button.${idx + 1}`}
                   >
                     <Plus size={12} /> Join
@@ -301,24 +301,28 @@ export default function LiveTabPage({
             <button
               type="button"
               onClick={() => handleSelectType("audio")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 hover:border-primary"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 hover:border-primary"
               data-ocid="live.audio_live.dialog.button"
             >
               <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
-                <Mic size={28} className="text-white" />
+                <Mic size={32} className="text-white" />
               </div>
-              <span className="text-primary font-bold text-sm">Audio Live</span>
+              <span className="text-primary font-bold text-base">
+                Audio Live
+              </span>
             </button>
             <button
               type="button"
               onClick={() => handleSelectType("video")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 hover:border-primary"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 hover:border-primary"
               data-ocid="live.video_live.dialog.button"
             >
               <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center">
-                <Camera size={28} className="text-white" />
+                <Camera size={32} className="text-white" />
               </div>
-              <span className="text-primary font-bold text-sm">Video Live</span>
+              <span className="text-primary font-bold text-base">
+                Video Live
+              </span>
             </button>
           </div>
         </DialogContent>
@@ -344,7 +348,7 @@ export default function LiveTabPage({
               onKeyDown={(e) => e.key === "Enter" && handleStartLive()}
               data-ocid="live.title.input"
             />
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 className="flex-1"

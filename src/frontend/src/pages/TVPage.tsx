@@ -146,16 +146,16 @@ export default function TVPage({
       {playing && (
         <div className="fixed inset-0 z-50 bg-black flex flex-col">
           {/* Player header */}
-          <div className="flex items-center gap-3 px-4 py-3 bg-black">
+          <div className="flex items-center gap-4 px-5 py-4 bg-black">
             <img
               src={playing.logo}
               alt={playing.name}
-              className="w-8 h-8 object-contain rounded"
+              className="w-11 h-11 object-contain rounded"
             />
-            <span className="text-white font-bold text-base flex-1">
+            <span className="text-white font-bold text-lg flex-1">
               {playing.name}
             </span>
-            <span className="bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded">
+            <span className="bg-red-600 text-white text-base font-bold px-2 py-0.5 rounded">
               LIVE
             </span>
             <button
@@ -164,7 +164,7 @@ export default function TVPage({
               className="text-white ml-2 p-1"
               data-ocid="tv.player.close"
             >
-              <X size={24} />
+              <X size={28} />
             </button>
           </div>
 
@@ -183,14 +183,14 @@ export default function TVPage({
       )}
 
       {/* Category filter */}
-      <div className="bg-white border-b border-gray-100 px-3 py-2.5">
-        <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-0.5">
+      <div className="bg-white border-b border-gray-100 px-4 py-4.5">
+        <div className="flex gap-3 overflow-x-auto scrollbar-hide pb-0.5">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}
               type="button"
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-1.5 rounded-full text-sm font-semibold whitespace-nowrap transition-all ${
+              className={`px-5 py-1.5 rounded-full text-base font-semibold whitespace-nowrap transition-all ${
                 activeCategory === cat
                   ? "bg-primary text-white shadow-sm"
                   : "bg-gray-100 text-gray-600"
@@ -204,8 +204,8 @@ export default function TVPage({
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-3">
-          <div className="grid grid-cols-3 gap-3">
+        <div className="p-4">
+          <div className="grid grid-cols-3 gap-4">
             {filtered.map((ch, i) => (
               <button
                 key={ch.id}
@@ -223,14 +223,14 @@ export default function TVPage({
                     LIVE
                   </span>
                 )}
-                <div className="w-full aspect-square bg-gray-50 flex items-center justify-center p-2">
+                <div className="w-full aspect-square bg-gray-50 flex items-center justify-center p-3">
                   <img
                     src={ch.logo}
                     alt={ch.name}
                     className="w-full h-full object-contain rounded-xl"
                   />
                 </div>
-                <p className="text-xs font-bold text-gray-800 text-center mt-1 px-1 leading-tight">
+                <p className="text-base font-bold text-gray-800 text-center mt-1 px-1 leading-tight">
                   {ch.name}
                 </p>
               </button>
@@ -247,7 +247,7 @@ export default function TVPage({
           )}
         </div>
 
-        <footer className="py-4 text-center text-xs text-muted-foreground border-t border-border">
+        <footer className="py-5 text-center text-base text-muted-foreground border-t border-border">
           © {new Date().getFullYear()}. Built with ❤️ using{" "}
           <a
             href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}

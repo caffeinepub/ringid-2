@@ -74,7 +74,7 @@ export default function LoginPage() {
             <h1 className="text-3xl font-bold text-white tracking-tight">
               RingID 2
             </h1>
-            <p className="text-white/80 text-sm mt-1">
+            <p className="text-white/80 text-base mt-1">
               Live Streaming & Community
             </p>
           </motion.div>
@@ -89,10 +89,10 @@ export default function LoginPage() {
           >
             {/* Welcome Back heading */}
             <div className="text-center mb-5">
-              <h2 className="text-2xl font-bold text-foreground">
+              <h2 className="text-3xl font-bold text-foreground">
                 {mode === "login" ? "Welcome Back" : "Create Account"}
               </h2>
-              <p className="text-muted-foreground text-sm mt-1">
+              <p className="text-muted-foreground text-base mt-1">
                 {mode === "login" ? "আপনার অ্যাকাউন্টে লগইন করুন" : "নতুন অ্যাকাউন্ট খুলুন"}
               </p>
             </div>
@@ -103,7 +103,7 @@ export default function LoginPage() {
                 <button
                   key={m}
                   type="button"
-                  className={`flex-1 py-3 text-base font-bold transition-colors ${
+                  className={`flex-1 py-4 text-lg font-bold transition-colors ${
                     mode === m
                       ? "orange-gradient text-white"
                       : "bg-white text-muted-foreground hover:bg-accent"
@@ -123,7 +123,7 @@ export default function LoginPage() {
               {mode === "register" && (
                 <div className="relative">
                   <User
-                    size={18}
+                    size={22}
                     className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                   />
                   <Input
@@ -131,7 +131,7 @@ export default function LoginPage() {
                     placeholder="আপনার নাম"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="pl-11 h-14 text-base rounded-2xl border-2 border-gray-200 focus:border-primary"
+                    className="pl-11 h-14 text-lg rounded-2xl border-2 border-gray-200 focus:border-primary"
                     data-ocid="login.input"
                   />
                 </div>
@@ -139,7 +139,7 @@ export default function LoginPage() {
 
               <div className="relative">
                 <Phone
-                  size={18}
+                  size={22}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                 />
                 <Input
@@ -147,14 +147,14 @@ export default function LoginPage() {
                   placeholder="+880xxxxxxxxx"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="pl-11 h-14 text-base rounded-2xl border-2 border-gray-200 focus:border-primary"
+                  className="pl-11 h-14 text-lg rounded-2xl border-2 border-gray-200 focus:border-primary"
                   data-ocid="login.input"
                 />
               </div>
 
               <div className="relative">
                 <Lock
-                  size={18}
+                  size={22}
                   className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                 />
                 <Input
@@ -162,7 +162,7 @@ export default function LoginPage() {
                   placeholder="পাসওয়ার্ড"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-11 pr-12 h-14 text-base rounded-2xl border-2 border-gray-200 focus:border-primary"
+                  className="pl-11 pr-12 h-14 text-lg rounded-2xl border-2 border-gray-200 focus:border-primary"
                   data-ocid="login.input"
                 />
                 <button
@@ -170,13 +170,13 @@ export default function LoginPage() {
                   className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
                 </button>
               </div>
 
               {error && (
                 <p
-                  className="text-red-500 text-sm font-medium text-center"
+                  className="text-red-500 text-base font-medium text-center"
                   data-ocid="login.error_state"
                 >
                   {error}
@@ -185,7 +185,7 @@ export default function LoginPage() {
 
               <Button
                 type="submit"
-                className="w-full h-14 text-lg font-bold rounded-2xl shadow-orange orange-gradient border-0 mt-2"
+                className="w-full h-14 text-xl font-bold rounded-2xl shadow-orange orange-gradient border-0 mt-2"
                 data-ocid="login.submit_button"
               >
                 {mode === "login" ? "লগইন করুন" : "রেজিস্ট্রেশন করুন"}
@@ -195,7 +195,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <footer className="py-4 text-center text-xs text-muted-foreground">
+        <footer className="py-5 text-center text-base text-muted-foreground">
           © {new Date().getFullYear()}. Built with ❤️ using{" "}
           <a
             href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}

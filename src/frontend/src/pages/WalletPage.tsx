@@ -42,17 +42,17 @@ function CopyNumberRow({
   initials,
 }: { label: string; color: string; initials: string }) {
   return (
-    <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
-      <div className="flex items-center gap-3">
+    <div className="flex items-center justify-between bg-gray-50 rounded-xl px-5 py-4">
+      <div className="flex items-center gap-4">
         <div
-          className="w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm"
+          className="w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-base"
           style={{ backgroundColor: color }}
         >
           {initials}
         </div>
         <div>
-          <p className="font-bold text-gray-800 text-sm">{label}</p>
-          <p className="text-gray-500 text-sm font-mono tracking-wider">
+          <p className="font-bold text-gray-800 text-base">{label}</p>
+          <p className="text-gray-500 text-base font-mono tracking-wider">
             01*******65
           </p>
         </div>
@@ -85,9 +85,9 @@ function CopyNumberRow({
           };
           tryClipboard();
         }}
-        className="flex items-center gap-1 px-3 py-2 rounded-xl bg-white border border-gray-200 text-gray-600 active:scale-95 transition-transform text-xs font-semibold shadow-sm"
+        className="flex items-center gap-2 px-4 py-3 rounded-xl bg-white border border-gray-200 text-gray-600 active:scale-95 transition-transform text-base font-semibold shadow-sm"
       >
-        <Copy size={14} />
+        <Copy size={18} />
         Copy
       </button>
     </div>
@@ -124,53 +124,53 @@ export default function WalletPage({
     <div className="flex flex-col min-h-screen bg-gray-50">
       {/* Header */}
       <header
-        className="flex-none text-white px-4 pt-12 pb-6"
+        className="flex-none text-white px-5 pt-12 pb-6"
         style={{
           background:
             "linear-gradient(135deg, oklch(0.55 0.22 38) 0%, oklch(0.68 0.20 48) 100%)",
         }}
       >
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-4 mb-6">
           <button
             type="button"
             onClick={() => navigate({ name: "home" })}
-            className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center"
+            className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center"
             data-ocid="wallet.close_button"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={24} />
           </button>
-          <span className="text-xl font-bold flex-1">Wallet</span>
+          <span className="text-2xl font-bold flex-1">Wallet</span>
         </div>
 
         {/* Balance cards */}
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-4">
           <motion.div
-            className="bg-white/20 backdrop-blur rounded-2xl p-4"
+            className="bg-white/20 backdrop-blur rounded-2xl p-5"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.05 }}
           >
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">🪙</span>
-              <span className="text-white/80 text-xs font-medium">Coins</span>
+            <div className="flex items-center gap-3 mb-1">
+              <span className="text-3xl">🪙</span>
+              <span className="text-white/80 text-base font-medium">Coins</span>
             </div>
-            <p className="text-white text-2xl font-bold">
+            <p className="text-white text-3xl font-bold">
               {coins.toLocaleString()}
             </p>
           </motion.div>
           <motion.div
-            className="bg-white/20 backdrop-blur rounded-2xl p-4"
+            className="bg-white/20 backdrop-blur rounded-2xl p-5"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-2xl">🥇</span>
-              <span className="text-white/80 text-xs font-medium">
+            <div className="flex items-center gap-3 mb-1">
+              <span className="text-3xl">🥇</span>
+              <span className="text-white/80 text-base font-medium">
                 Gold Coins
               </span>
             </div>
-            <p className="text-white text-2xl font-bold">
+            <p className="text-white text-3xl font-bold">
               {goldCoins.toLocaleString()}
             </p>
           </motion.div>
@@ -178,23 +178,23 @@ export default function WalletPage({
       </header>
 
       {/* Tabs */}
-      <div className="flex-1 px-4 pt-4 pb-6">
+      <div className="flex-1 px-5 pt-4 pb-6">
         <Tabs defaultValue="coin" data-ocid="wallet.tab">
           <TabsList className="w-full mb-4 h-12 bg-white shadow-sm rounded-xl">
             <TabsTrigger
               value="coin"
-              className="flex-1 flex items-center gap-2 text-sm font-bold data-[state=active]:bg-primary data-[state=active]:text-white rounded-lg"
+              className="flex-1 flex items-center gap-3 text-base font-bold data-[state=active]:bg-primary data-[state=active]:text-white rounded-xl"
               data-ocid="wallet.coin.tab"
             >
-              <Coins size={16} />
+              <Coins size={20} />
               কয়েন রিচার্জ
             </TabsTrigger>
             <TabsTrigger
               value="gold"
-              className="flex-1 flex items-center gap-2 text-sm font-bold data-[state=active]:bg-yellow-500 data-[state=active]:text-white rounded-lg"
+              className="flex-1 flex items-center gap-3 text-base font-bold data-[state=active]:bg-yellow-500 data-[state=active]:text-white rounded-xl"
               data-ocid="wallet.gold.tab"
             >
-              <Star size={16} />
+              <Star size={20} />
               গোল্ড কয়েন
             </TabsTrigger>
           </TabsList>
@@ -203,15 +203,15 @@ export default function WalletPage({
             {COIN_PACKAGES.map((pkg, i) => (
               <motion.div
                 key={pkg.price}
-                className="bg-white rounded-2xl p-4 shadow-sm flex items-center justify-between"
+                className="bg-white rounded-2xl p-5 shadow-sm flex items-center justify-between"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.06 }}
                 data-ocid={`wallet.coin.item.${i + 1}`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    className="w-16 h-16 rounded-xl flex items-center justify-center text-3xl"
                     style={{
                       background:
                         "linear-gradient(135deg, oklch(0.95 0.10 48) 0%, oklch(0.90 0.14 42) 100%)",
@@ -220,13 +220,13 @@ export default function WalletPage({
                     🪙
                   </div>
                   <div>
-                    <p className="font-bold text-base">
+                    <p className="font-bold text-lg">
                       {pkg.coins.toLocaleString()}{" "}
-                      <span className="text-muted-foreground font-normal text-sm">
+                      <span className="text-muted-foreground font-normal text-base">
                         Coins
                       </span>
                     </p>
-                    <p className="text-primary font-bold text-sm">
+                    <p className="text-primary font-bold text-base">
                       ৳{pkg.price.toLocaleString()}
                     </p>
                   </div>
@@ -251,24 +251,24 @@ export default function WalletPage({
             {GOLD_PACKAGES.map((pkg, i) => (
               <motion.div
                 key={pkg.price}
-                className="bg-white rounded-2xl p-4 shadow-sm flex items-center justify-between"
+                className="bg-white rounded-2xl p-5 shadow-sm flex items-center justify-between"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.06 }}
                 data-ocid={`wallet.gold.item.${i + 1}`}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center text-2xl">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-xl bg-yellow-50 flex items-center justify-center text-3xl">
                     🥇
                   </div>
                   <div>
-                    <p className="font-bold text-base">
+                    <p className="font-bold text-lg">
                       {pkg.coins.toLocaleString()}{" "}
-                      <span className="text-muted-foreground font-normal text-sm">
+                      <span className="text-muted-foreground font-normal text-base">
                         Gold Coins
                       </span>
                     </p>
-                    <p className="text-yellow-600 font-bold text-sm">
+                    <p className="text-yellow-600 font-bold text-base">
                       ৳{pkg.price.toLocaleString()}
                     </p>
                   </div>
@@ -294,21 +294,21 @@ export default function WalletPage({
           data-ocid="wallet.dialog"
         >
           <DialogHeader>
-            <DialogTitle className="text-center text-base font-bold">
+            <DialogTitle className="text-center text-lg font-bold">
               💳 পেমেন্ট করুন
             </DialogTitle>
           </DialogHeader>
           {pending && (
             <div className="space-y-4">
-              <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-center">
-                <p className="text-sm text-gray-600">
+              <div className="bg-orange-50 border border-orange-200 rounded-xl px-5 py-4 text-center">
+                <p className="text-base text-gray-600">
                   নিচের নম্বরে{" "}
-                  <span className="font-bold text-orange-600 text-base">
+                  <span className="font-bold text-orange-600 text-lg">
                     ৳{pending.price.toLocaleString()}
                   </span>{" "}
                   পাঠান
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-base text-gray-500 mt-1">
                   পেমেন্টের পর{" "}
                   <span className="font-semibold text-gray-700">
                     {pending.amount.toLocaleString()}{" "}
@@ -323,7 +323,7 @@ export default function WalletPage({
                 <CopyNumberRow label="Nagad" color="#F7941D" initials="Na" />
               </div>
 
-              <div className="grid grid-cols-2 gap-2 pt-1">
+              <div className="grid grid-cols-2 gap-3 pt-1">
                 <Button
                   variant="outline"
                   className="rounded-xl font-bold"

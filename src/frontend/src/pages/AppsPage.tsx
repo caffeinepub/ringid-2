@@ -84,14 +84,14 @@ export default function AppsPage({
 }: { navigate: (p: AppPage) => void }) {
   return (
     <ScrollArea className="h-full bg-gray-50">
-      <div className="p-4">
-        <div className="grid grid-cols-3 gap-3">
+      <div className="p-5">
+        <div className="grid grid-cols-3 gap-4">
           {APPS.map((app, i) => (
             <motion.button
               key={app.id}
               type="button"
               onClick={() => toast.info(`${app.label} coming soon!`)}
-              className="bg-white rounded-2xl p-4 flex flex-col items-center gap-2 shadow-card hover:shadow-md transition-shadow active:scale-95"
+              className="bg-white rounded-2xl p-5 flex flex-col items-center gap-3 shadow-card hover:shadow-md transition-shadow active:scale-95"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
@@ -102,10 +102,10 @@ export default function AppsPage({
               >
                 <app.icon size={26} className="text-white" />
               </div>
-              <span className="text-xs font-bold text-gray-800 text-center leading-tight">
+              <span className="text-base font-bold text-gray-800 text-center leading-tight">
                 {app.label}
               </span>
-              <span className="text-[10px] text-muted-foreground text-center">
+              <span className="text-base text-muted-foreground text-center">
                 {app.desc}
               </span>
             </motion.button>
@@ -113,7 +113,7 @@ export default function AppsPage({
         </div>
       </div>
 
-      <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
+      <footer className="py-4 text-center text-base text-muted-foreground border-t border-border">
         © {new Date().getFullYear()}. Built with ❤️ using{" "}
         <a
           href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}

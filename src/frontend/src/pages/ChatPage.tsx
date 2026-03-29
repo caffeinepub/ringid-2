@@ -85,7 +85,7 @@ export default function ChatPage({
   return (
     <div className="flex flex-col h-full bg-gray-50">
       {/* Search bar */}
-      <div className="bg-white px-3 py-2.5 border-b border-gray-100">
+      <div className="bg-white px-4 py-4.5 border-b border-gray-100">
         <div className="relative">
           <Search
             size={15}
@@ -95,20 +95,20 @@ export default function ChatPage({
             placeholder="Search messages..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-gray-100 rounded-full pl-9 pr-4 py-2 text-sm outline-none"
+            className="w-full bg-gray-100 rounded-full pl-9 pr-4 py-3 text-base outline-none"
             data-ocid="chat.search_input"
           />
         </div>
       </div>
 
       <ScrollArea className="flex-1">
-        <div className="p-3 space-y-1">
+        <div className="p-4 space-y-1">
           {filtered.map((contact, i) => (
             <motion.button
               key={contact.id}
               type="button"
               onClick={() => toast.info(`Opening chat with ${contact.name}`)}
-              className="w-full bg-white rounded-2xl p-3.5 flex items-center gap-3 text-left shadow-card hover:shadow-md transition-shadow active:scale-[0.99]"
+              className="w-full bg-white rounded-2xl p-4.5 flex items-center gap-4 text-left shadow-card hover:shadow-md transition-shadow active:scale-[0.99]"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
@@ -117,38 +117,38 @@ export default function ChatPage({
               <div className="relative flex-none">
                 <Avatar className="w-14 h-14">
                   <AvatarFallback
-                    className={`${contact.color} text-white font-bold text-lg`}
+                    className={`${contact.color} text-white font-bold text-xl`}
                   >
                     {contact.name[0]}
                   </AvatarFallback>
                 </Avatar>
                 {contact.unread > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center text-white text-base font-bold">
                     {contact.unread}
                   </span>
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
-                  <span className="font-semibold text-sm text-foreground">
+                  <span className="font-semibold text-base text-foreground">
                     {contact.name}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-base text-muted-foreground">
                     {contact.time}
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground truncate">
+                <p className="text-base text-muted-foreground truncate">
                   {contact.lastMsg}
                 </p>
               </div>
-              <div className="flex gap-1.5 flex-none">
+              <div className="flex gap-3 flex-none">
                 <button
                   type="button"
                   onClick={(e) => {
                     e.stopPropagation();
                     toast.info("Starting voice call...");
                   }}
-                  className="w-9 h-9 rounded-full bg-accent flex items-center justify-center"
+                  className="w-12 h-12 rounded-full bg-accent flex items-center justify-center"
                   data-ocid={`chat.button.${i + 1}`}
                 >
                   <Phone size={15} className="text-primary" />
@@ -159,7 +159,7 @@ export default function ChatPage({
                     e.stopPropagation();
                     toast.info("Starting video call...");
                   }}
-                  className="w-9 h-9 rounded-full bg-accent flex items-center justify-center"
+                  className="w-12 h-12 rounded-full bg-accent flex items-center justify-center"
                   data-ocid={`chat.button.${i + 1}`}
                 >
                   <Video size={15} className="text-primary" />
@@ -178,7 +178,7 @@ export default function ChatPage({
           )}
         </div>
 
-        <footer className="py-3 text-center text-xs text-muted-foreground border-t border-border">
+        <footer className="py-4 text-center text-base text-muted-foreground border-t border-border">
           © {new Date().getFullYear()}. Built with ❤️ using{" "}
           <a
             href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}

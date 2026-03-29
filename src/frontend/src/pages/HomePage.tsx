@@ -140,7 +140,7 @@ function LiveTimer({ startTime }: { startTime: bigint }) {
     .padStart(2, "0");
   const s = (elapsed % 60).toString().padStart(2, "0");
   return (
-    <span className="text-xs text-muted-foreground tabular-nums">
+    <span className="text-base text-muted-foreground tabular-nums">
       {h}:{m}:{s}
     </span>
   );
@@ -253,7 +253,7 @@ export default function HomePage({
       <ScrollArea className="flex-1">
         <div className="pb-20">
           {/* Quick action shortcuts */}
-          <div className="bg-white px-3 py-3 mb-2">
+          <div className="bg-white px-4 py-4 mb-2">
             <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-1">
               {[
                 {
@@ -309,7 +309,7 @@ export default function HomePage({
                   key={label}
                   type="button"
                   onClick={onClick}
-                  className="flex flex-col items-center gap-1.5 flex-none"
+                  className="flex flex-col items-center gap-3 flex-none"
                   data-ocid={ocid}
                 >
                   <div
@@ -325,19 +325,42 @@ export default function HomePage({
             </div>
           </div>
 
+          {/* Marquee ticker banner */}
+          <div
+            className="overflow-hidden mb-2"
+            style={{
+              height: "38px",
+              display: "flex",
+              alignItems: "center",
+              backgroundColor: "#FF6B00",
+            }}
+            data-ocid="home.panel"
+          >
+            <span
+              className="marquee-track text-white font-semibold text-sm px-4"
+              style={{ paddingTop: "2px", paddingBottom: "2px" }}
+            >
+              🎉 Welcome to RingID 2! Live streaming, coin gifting, TV channels
+              and more... 🔴 Go Live anytime! 💰 Buy coins in Wallet!
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 🎉 Welcome to RingID 2! Live
+              streaming, coin gifting, TV channels and more... 🔴 Go Live
+              anytime! 💰 Buy coins in Wallet!
+            </span>
+          </div>
+
           {/* Services grid */}
-          <div className="px-3 mb-2">
-            <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
-              <div className="grid grid-cols-3 gap-2">
+          <div className="px-4 mb-2">
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className="grid grid-cols-3 gap-3">
                 {/* ইসলামিক ফলার */}
                 <button
                   type="button"
                   onClick={() => toast.info("ইসলামিক ফলার")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
                   data-ocid="home.islamic.button"
                 >
-                  <span className="text-2xl">🌙</span>
-                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-3xl">🌙</span>
+                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
                     ইসলামিক ফলার
                   </span>
                 </button>
@@ -346,13 +369,13 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Community Jobs")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
                   data-ocid="home.community_jobs.button"
                 >
-                  <div className="w-8 h-8 rounded-md bg-green-500 flex items-center justify-center">
-                    <Heart size={16} className="text-white" fill="white" />
+                  <div className="w-11 h-11 rounded-md bg-green-500 flex items-center justify-center">
+                    <Heart size={20} className="text-white" fill="white" />
                   </div>
-                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
                     Community Jobs
                   </span>
                 </button>
@@ -361,11 +384,11 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Doctors")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
                   data-ocid="home.doctors.button"
                 >
                   <Stethoscope size={26} className="text-teal-600" />
-                  <span className="text-[10px] font-semibold text-teal-700 text-center leading-tight">
+                  <span className="text-base font-semibold text-teal-700 text-center leading-tight">
                     Doctors
                   </span>
                 </button>
@@ -374,18 +397,18 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Ring Agent")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
                   data-ocid="home.ring_agent.button"
                 >
                   <div className="flex items-baseline gap-0.5">
-                    <span className="text-primary font-black text-sm">
+                    <span className="text-primary font-black text-base">
                       ring
                     </span>
-                    <span className="text-blue-900 font-black text-sm">
+                    <span className="text-blue-900 font-black text-base">
                       agent
                     </span>
                   </div>
-                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
                     Ring Agent
                   </span>
                 </button>
@@ -394,18 +417,18 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Notice")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors relative"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors relative"
                   data-ocid="home.notice.button"
                 >
                   <div className="relative">
-                    <div className="w-8 h-8 rounded-md bg-yellow-400 flex items-center justify-center">
-                      <span className="text-yellow-900 font-black text-xs">
+                    <div className="w-11 h-11 rounded-md bg-yellow-400 flex items-center justify-center">
+                      <span className="text-yellow-900 font-black text-base">
                         !
                       </span>
                     </div>
                     <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
                   </div>
-                  <span className="text-[10px] font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
                     Notice
                   </span>
                 </button>
@@ -414,13 +437,13 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("More")}
-                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
                   data-ocid="home.more.button"
                 >
-                  <span className="text-primary font-black text-lg leading-none">
+                  <span className="text-primary font-black text-xl leading-none">
                     »»
                   </span>
-                  <span className="text-[10px] font-semibold text-primary text-center leading-tight">
+                  <span className="text-base font-semibold text-primary text-center leading-tight">
                     More &gt;&gt;&gt;
                   </span>
                 </button>
@@ -429,32 +452,32 @@ export default function HomePage({
           </div>
 
           {/* Banner cards */}
-          <div className="px-3 mb-2 grid grid-cols-2 gap-2">
+          <div className="px-4 mb-2 grid grid-cols-2 gap-3">
             <button
               type="button"
-              className="bg-white rounded-2xl p-4 flex flex-col items-start gap-1 shadow-card border border-gray-100"
+              className="bg-white rounded-2xl p-5 flex flex-col items-start gap-2 shadow-card border border-gray-100"
               onClick={() => navigate({ name: "live", roomId: BigInt(1) })}
               data-ocid="home.public_room.button"
             >
               <span className="text-gray-500 text-[11px] font-semibold">
                 JOIN
               </span>
-              <div className="flex items-center gap-1">
-                <span className="text-red-600 font-black text-xl">LIVE</span>
-                <span className="text-xl">📹</span>
+              <div className="flex items-center gap-2">
+                <span className="text-red-600 font-black text-2xl">LIVE</span>
+                <span className="text-2xl">📹</span>
               </div>
-              <span className="text-gray-700 font-semibold text-xs">
+              <span className="text-gray-700 font-semibold text-base">
                 PUBLIC ROOM
               </span>
             </button>
             <button
               type="button"
-              className="bg-white rounded-2xl p-4 flex flex-col items-start gap-2 shadow-card border border-gray-100"
+              className="bg-white rounded-2xl p-5 flex flex-col items-start gap-3 shadow-card border border-gray-100"
               onClick={() => toast.info("Community Discount Zone")}
               data-ocid="home.discount.button"
             >
               <ShoppingCart size={22} className="text-primary" />
-              <span className="text-gray-800 font-bold text-xs leading-tight">
+              <span className="text-gray-800 font-bold text-base leading-tight">
                 COMMUNITY DISCOUNT ZONE
               </span>
             </button>
@@ -462,14 +485,14 @@ export default function HomePage({
 
           {/* Live streamers - vertical list */}
           <div className="bg-white mb-2">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-              <h2 className="font-bold text-sm flex items-center gap-1.5">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+              <h2 className="font-bold text-base flex items-center gap-3">
                 <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
                 Live Now
               </h2>
               <button
                 type="button"
-                className="text-xs text-primary font-semibold"
+                className="text-base text-primary font-semibold"
                 data-ocid="home.secondary_button"
               >
                 See all
@@ -478,8 +501,8 @@ export default function HomePage({
             <div className="divide-y divide-gray-50">
               {isLoading
                 ? [1, 2, 3].map((i) => (
-                    <div key={i} className="flex items-center gap-3 px-4 py-3">
-                      <Skeleton className="w-16 h-16 rounded-xl flex-none" />
+                    <div key={i} className="flex items-center gap-4 px-5 py-4">
+                      <Skeleton className="w-20 h-20 rounded-xl flex-none" />
                       <div className="flex-1">
                         <Skeleton className="h-4 w-28 mb-1" />
                         <Skeleton className="h-3 w-20" />
@@ -489,7 +512,7 @@ export default function HomePage({
                 : rooms.slice(0, 6).map((room, idx) => (
                     <motion.div
                       key={room.id.toString()}
-                      className="flex items-center gap-3 px-4 py-3"
+                      className="flex items-center gap-4 px-5 py-4"
                       initial={{ opacity: 0, x: -8 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.06 }}
@@ -508,17 +531,17 @@ export default function HomePage({
                             `https://picsum.photos/seed/${room.id}/200/200`
                           }
                           alt={room.title}
-                          className="w-16 h-16 object-cover rounded-xl"
+                          className="w-20 h-20 object-cover rounded-xl"
                         />
                         <span className="absolute top-1 left-1 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">
                           LIVE
                         </span>
                       </button>
                       <div className="flex-1 min-w-0">
-                        <p className="font-bold text-sm text-gray-900 truncate">
+                        <p className="font-bold text-base text-gray-900 truncate">
                           {room.hostName}
                         </p>
-                        <p className="text-xs text-gray-500 mt-0.5">
+                        <p className="text-base text-gray-500 mt-0.5">
                           LIVE on{" "}
                           <span className="text-primary font-semibold">
                             RingID 2
@@ -531,10 +554,10 @@ export default function HomePage({
                         onClick={() =>
                           navigate({ name: "live", roomId: room.id })
                         }
-                        className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-none"
+                        className="w-11 h-11 rounded-full bg-primary flex items-center justify-center flex-none"
                         data-ocid={`home.join.button.${idx + 1}`}
                       >
-                        <Plus size={16} className="text-white" />
+                        <Plus size={20} className="text-white" />
                       </button>
                     </motion.div>
                   ))}
@@ -542,13 +565,13 @@ export default function HomePage({
           </div>
 
           {/* Post feed */}
-          <div className="px-3">
-            <h2 className="font-bold text-sm mb-3 px-1">📝 Feed</h2>
+          <div className="px-4">
+            <h2 className="font-bold text-base mb-3 px-1">📝 Feed</h2>
             {/* Create post */}
             <div className="bg-white rounded-2xl shadow-card mb-3 overflow-hidden">
-              <div className="p-3 flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-none">
-                  <span className="text-white font-bold text-sm">
+              <div className="p-4 flex items-center gap-4">
+                <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center flex-none">
+                  <span className="text-white font-bold text-base">
                     {userInitial}
                   </span>
                 </div>
@@ -558,7 +581,7 @@ export default function HomePage({
                   value={postText}
                   onChange={(e) => setPostText(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handlePost()}
-                  className="flex-1 bg-gray-100 rounded-full px-4 py-2.5 text-sm outline-none"
+                  className="flex-1 bg-gray-100 rounded-full px-5 py-4.5 text-base outline-none"
                   data-ocid="home.input"
                 />
               </div>
@@ -589,17 +612,17 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => imageInputRef.current?.click()}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-muted-foreground hover:bg-gray-50 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-3 py-4.5 text-muted-foreground hover:bg-gray-50 transition-colors"
                   data-ocid="home.upload_button"
                 >
-                  <Image size={16} className="text-green-500" />
-                  <span className="text-sm">Photo</span>
+                  <Image size={20} className="text-green-500" />
+                  <span className="text-base">Photo</span>
                 </button>
                 <button
                   type="button"
                   onClick={handlePost}
                   disabled={!postText.trim() && !postImage}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-primary font-semibold hover:bg-accent disabled:opacity-40 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-3 py-4.5 text-primary font-semibold hover:bg-accent disabled:opacity-40 transition-colors"
                   data-ocid="home.post.button"
                 >
                   Post
@@ -617,22 +640,22 @@ export default function HomePage({
                 transition={{ delay: idx * 0.04 }}
                 data-ocid={`home.feed.item.${idx + 1}`}
               >
-                <div className="p-3">
-                  <div className="flex items-center gap-2.5 mb-2">
-                    <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center flex-none">
-                      <span className="text-white font-bold text-sm">
+                <div className="p-4">
+                  <div className="flex items-center gap-3.5 mb-2">
+                    <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center flex-none">
+                      <span className="text-white font-bold text-base">
                         {post.author[0]}
                       </span>
                     </div>
                     <div>
-                      <p className="font-semibold text-sm">{post.author}</p>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="font-semibold text-base">{post.author}</p>
+                      <p className="text-base text-muted-foreground">
                         {post.time}
                       </p>
                     </div>
                   </div>
                   {post.text && (
-                    <p className="text-sm text-foreground mb-2 leading-relaxed">
+                    <p className="text-base text-foreground mb-2 leading-relaxed">
                       {post.text}
                     </p>
                   )}
@@ -648,39 +671,39 @@ export default function HomePage({
                   <button
                     type="button"
                     onClick={() => handleLike(post.id)}
-                    className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 ${
+                    className={`flex-1 flex items-center justify-center gap-3 py-4.5 ${
                       post.liked ? "text-red-500" : "text-muted-foreground"
                     } hover:bg-gray-50 transition-colors`}
                     data-ocid={`home.like.button.${idx + 1}`}
                   >
                     <Heart
-                      size={16}
+                      size={20}
                       fill={post.liked ? "currentColor" : "none"}
                     />
-                    <span className="text-xs">{post.likes}</span>
+                    <span className="text-base">{post.likes}</span>
                   </button>
                   <button
                     type="button"
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-muted-foreground hover:bg-gray-50 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-3 py-4.5 text-muted-foreground hover:bg-gray-50 transition-colors"
                     data-ocid={`home.comment.button.${idx + 1}`}
                   >
-                    <MessageCircle size={16} />
-                    <span className="text-xs">{post.comments}</span>
+                    <MessageCircle size={20} />
+                    <span className="text-base">{post.comments}</span>
                   </button>
                   <button
                     type="button"
-                    className="flex-1 flex items-center justify-center gap-1.5 py-2.5 text-muted-foreground hover:bg-gray-50 transition-colors"
+                    className="flex-1 flex items-center justify-center gap-3 py-4.5 text-muted-foreground hover:bg-gray-50 transition-colors"
                     onClick={() => toast.success("Link copied!")}
                     data-ocid={`home.share.button.${idx + 1}`}
                   >
-                    <Share2 size={16} />
+                    <Share2 size={20} />
                   </button>
                 </div>
               </motion.div>
             ))}
           </div>
 
-          <footer className="py-4 text-center text-xs text-muted-foreground">
+          <footer className="py-5 text-center text-base text-muted-foreground">
             © {new Date().getFullYear()}. Built with ❤️ using{" "}
             <a
               href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
@@ -701,7 +724,7 @@ export default function HomePage({
           data-ocid="home.livetype.dialog"
         >
           <DialogHeader>
-            <DialogTitle className="text-center text-xl font-bold text-primary">
+            <DialogTitle className="text-center text-2xl font-bold text-primary">
               Choose Live Type
             </DialogTitle>
           </DialogHeader>
@@ -709,28 +732,28 @@ export default function HomePage({
             <button
               type="button"
               onClick={() => handleSelectLiveType("audio")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-5 hover:border-primary transition-colors"
               data-ocid="home.audio_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
-                <Mic size={32} className="text-white" />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-orange">
+                <Mic size={38} className="text-white" />
               </div>
               <span className="text-primary font-bold">Audio Live</span>
-              <span className="text-muted-foreground text-xs text-center">
+              <span className="text-muted-foreground text-base text-center">
                 Mic only, RingID 2 branding
               </span>
             </button>
             <button
               type="button"
               onClick={() => handleSelectLiveType("video")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-5 hover:border-primary transition-colors"
               data-ocid="home.video_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
-                <Camera size={32} className="text-white" />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-orange">
+                <Camera size={38} className="text-white" />
               </div>
               <span className="text-primary font-bold">Video Live</span>
-              <span className="text-muted-foreground text-xs text-center">
+              <span className="text-muted-foreground text-base text-center">
                 Camera + mic stream
               </span>
             </button>
@@ -764,7 +787,7 @@ export default function HomePage({
               onKeyDown={(e) => e.key === "Enter" && handleCreate()}
               data-ocid="home.input"
             />
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 className="flex-1"

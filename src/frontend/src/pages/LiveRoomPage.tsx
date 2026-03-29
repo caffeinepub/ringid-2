@@ -337,9 +337,9 @@ export default function LiveRoomPage({
               <span className="text-white text-4xl font-extrabold tracking-widest drop-shadow-lg">
                 RingID 2
               </span>
-              <div className="flex items-center gap-2 bg-white/20 px-4 py-2 rounded-full">
-                <Mic size={16} className="text-white animate-pulse" />
-                <span className="text-white/90 text-sm font-semibold">
+              <div className="flex items-center gap-3 bg-white/20 px-5 py-3 rounded-full">
+                <Mic size={20} className="text-white animate-pulse" />
+                <span className="text-white/90 text-base font-semibold">
                   Audio Live
                 </span>
               </div>
@@ -363,7 +363,7 @@ export default function LiveRoomPage({
         {floatingCoins.map((coin) => (
           <motion.div
             key={coin.id}
-            className="absolute bottom-36 right-12 z-50 text-2xl pointer-events-none"
+            className="absolute bottom-36 right-12 z-50 text-3xl pointer-events-none"
             initial={{ opacity: 1, y: 0, scale: 1 }}
             animate={{ opacity: 0, y: -150, scale: 1.5 }}
             exit={{ opacity: 0 }}
@@ -375,33 +375,33 @@ export default function LiveRoomPage({
       </AnimatePresence>
 
       {/* Top bar */}
-      <div className="relative z-10 flex items-center justify-between px-4 pt-5 pb-2">
+      <div className="relative z-10 flex items-center justify-between px-5 pt-5 pb-2">
         <button
           type="button"
           onClick={() => navigate({ name: "home" })}
-          className="w-10 h-10 rounded-full bg-black/40 flex items-center justify-center"
+          className="w-14 h-14 rounded-full bg-black/40 flex items-center justify-center"
           data-ocid="live.close_button"
         >
           <ArrowLeft size={22} className="text-white" />
         </button>
         <div className="flex flex-col items-center">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <span
-              className={`text-white text-xs font-bold px-2 py-0.5 rounded-full ${isLive ? "bg-red-500 animate-pulse" : "bg-red-500/70"}`}
+              className={`text-white text-base font-bold px-2 py-0.5 rounded-full ${isLive ? "bg-red-500 animate-pulse" : "bg-red-500/70"}`}
             >
               🔴 LIVE
             </span>
-            <span className="text-white text-sm font-semibold max-w-[160px] truncate">
+            <span className="text-white text-base font-semibold max-w-[160px] truncate">
               {displayTitle}
             </span>
           </div>
-          <span className="text-white/70 text-xs mt-0.5">
+          <span className="text-white/70 text-base mt-0.5">
             {isHost ? `You · #${userId}` : displayHost}
           </span>
         </div>
-        <div className="flex items-center gap-1 bg-black/40 px-2.5 py-1.5 rounded-full">
+        <div className="flex items-center gap-2 bg-black/40 px-2.5 py-1.5 rounded-full">
           <Users size={12} className="text-white" />
-          <span className="text-white text-xs">
+          <span className="text-white text-base">
             {(displayViewers + Math.floor(timer / 30)).toLocaleString()}
           </span>
         </div>
@@ -409,7 +409,7 @@ export default function LiveRoomPage({
 
       {/* Timer */}
       <div className="relative z-10 flex justify-center">
-        <span className="bg-black/40 text-white text-xs px-3 py-1 rounded-full">
+        <span className="bg-black/40 text-white text-base px-4 py-1 rounded-full">
           {formatDuration(startMs)}
         </span>
       </div>
@@ -453,12 +453,12 @@ export default function LiveRoomPage({
           >
             <div className="w-11 h-11 rounded-full bg-black/40 flex items-center justify-center">
               {"emoji" in btn ? (
-                <span className="text-xl">{btn.emoji}</span>
+                <span className="text-2xl">{btn.emoji}</span>
               ) : (
-                btn.icon && <btn.icon size={20} className={btn.color} />
+                btn.icon && <btn.icon size={24} className={btn.color} />
               )}
             </div>
-            <span className="text-white text-[10px]">{btn.label}</span>
+            <span className="text-white text-base">{btn.label}</span>
           </button>
         ))}
 
@@ -473,12 +473,12 @@ export default function LiveRoomPage({
               className={`w-11 h-11 rounded-full flex items-center justify-center ${camOn ? "bg-black/40" : "bg-red-500/80"}`}
             >
               {camOn ? (
-                <Camera size={18} className="text-white" />
+                <Camera size={22} className="text-white" />
               ) : (
-                <CameraOff size={18} className="text-white" />
+                <CameraOff size={22} className="text-white" />
               )}
             </div>
-            <span className="text-white text-[10px]">Cam</span>
+            <span className="text-white text-base">Cam</span>
           </button>
         )}
 
@@ -493,12 +493,12 @@ export default function LiveRoomPage({
               className={`w-11 h-11 rounded-full flex items-center justify-center ${micOn ? "bg-black/40" : "bg-red-500/80"}`}
             >
               {micOn ? (
-                <Mic size={18} className="text-white" />
+                <Mic size={22} className="text-white" />
               ) : (
-                <MicOff size={18} className="text-white" />
+                <MicOff size={22} className="text-white" />
               )}
             </div>
-            <span className="text-white text-[10px]">Mic</span>
+            <span className="text-white text-base">Mic</span>
           </button>
         )}
       </div>
@@ -507,7 +507,7 @@ export default function LiveRoomPage({
       <AnimatePresence>
         {voteOpen && (
           <motion.div
-            className="absolute left-4 right-16 top-1/3 z-30 bg-black/70 rounded-2xl p-4"
+            className="absolute left-4 right-16 top-1/3 z-30 bg-black/70 rounded-2xl p-5"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
@@ -517,7 +517,7 @@ export default function LiveRoomPage({
               <button
                 type="button"
                 onClick={() => setVoteOpen(false)}
-                className="text-white/60 text-xl"
+                className="text-white/60 text-2xl"
               >
                 ×
               </button>
@@ -528,7 +528,7 @@ export default function LiveRoomPage({
               className="w-full mb-3 text-left"
               data-ocid="live.vote.button"
             >
-              <div className="flex justify-between text-white text-sm mb-1">
+              <div className="flex justify-between text-white text-base mb-1">
                 <span>🔵 Team A</span>
                 <span>
                   {votes.a} ({pctA}%)
@@ -541,7 +541,7 @@ export default function LiveRoomPage({
               onClick={() => setVotes((v) => ({ ...v, b: v.b + 1 }))}
               className="w-full text-left"
             >
-              <div className="flex justify-between text-white text-sm mb-1">
+              <div className="flex justify-between text-white text-base mb-1">
                 <span>🔴 Team B</span>
                 <span>
                   {votes.b} ({pctB}%)
@@ -557,32 +557,32 @@ export default function LiveRoomPage({
 
       {/* Chat */}
       <div className="relative z-10 max-h-64">
-        <ScrollArea className="h-56 px-3">
+        <ScrollArea className="h-56 px-4">
           <AnimatePresence>
             {allMessages.map((msg, i) => (
               <motion.div
                 key={msg.key}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="flex items-start gap-2 mb-2"
+                className="flex items-start gap-3 mb-2"
                 data-ocid={`live.item.${i + 1}`}
               >
                 <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center flex-none">
-                  <span className="text-white text-xs font-bold">
+                  <span className="text-white text-base font-bold">
                     {msg.senderName[0]}
                   </span>
                 </div>
-                <div className="bg-black/40 rounded-xl px-3 py-1.5 max-w-[70%]">
-                  <span className="text-primary text-xs font-semibold">
+                <div className="bg-black/40 rounded-xl px-4 py-1.5 max-w-[70%]">
+                  <span className="text-primary text-base font-semibold">
                     {msg.senderName}
                   </span>
-                  <p className="text-white text-sm">{msg.message}</p>
+                  <p className="text-white text-base">{msg.message}</p>
                 </div>
               </motion.div>
             ))}
           </AnimatePresence>
           {allMessages.length === 0 && (
-            <p className="text-white/40 text-sm text-center py-4">
+            <p className="text-white/40 text-base text-center py-5">
               No comments yet. Be the first!
             </p>
           )}
@@ -591,7 +591,7 @@ export default function LiveRoomPage({
       </div>
 
       {/* Bottom bar */}
-      <div className="relative z-10 px-3 pb-4 pt-2 flex items-center gap-2">
+      <div className="relative z-10 px-4 pb-4 pt-2 flex items-center gap-3">
         <Input
           placeholder="Say something..."
           value={message}
@@ -603,26 +603,26 @@ export default function LiveRoomPage({
         <Button
           type="button"
           size="icon"
-          className="w-10 h-10 rounded-full bg-primary flex-none"
+          className="w-14 h-14 rounded-full bg-primary flex-none"
           onClick={handleSend}
           disabled={sendMessage.isPending || !message.trim()}
           data-ocid="live.submit_button"
         >
-          <Send size={18} />
+          <Send size={22} />
         </Button>
         <button
           type="button"
           onClick={handleGoLive}
-          className={`flex items-center gap-1.5 px-3 py-2 rounded-full text-white text-sm font-bold ${isLive ? "bg-red-600" : "bg-primary"}`}
+          className={`flex items-center gap-3 px-4 py-3 rounded-full text-white text-base font-bold ${isLive ? "bg-red-600" : "bg-primary"}`}
           data-ocid="live.primary_button"
         >
           {isLive ? (
             <>
-              <Radio size={14} className="animate-pulse" /> Stop
+              <Radio size={18} className="animate-pulse" /> Stop
             </>
           ) : (
             <>
-              <Video size={14} /> Go Live
+              <Video size={18} /> Go Live
             </>
           )}
         </button>
@@ -640,18 +640,18 @@ export default function LiveRoomPage({
               🎁 Send a Gift
             </SheetTitle>
           </SheetHeader>
-          <div className="grid grid-cols-3 gap-3 mt-4 pb-4">
+          <div className="grid grid-cols-3 gap-4 mt-4 pb-4">
             {COIN_GIFTS.map((gift) => (
               <button
                 key={gift.amount}
                 type="button"
                 onClick={() => handleSendGift(gift)}
-                className="flex flex-col items-center gap-1.5 bg-white rounded-2xl py-4 shadow-card border border-border active:bg-accent"
+                className="flex flex-col items-center gap-3 bg-white rounded-2xl py-5 shadow-card border border-border active:bg-accent"
                 data-ocid="live.gift.button"
               >
                 <span className="text-3xl">🪙</span>
                 <span className="text-primary font-bold">{gift.label}</span>
-                <span className="text-muted-foreground text-xs">coins</span>
+                <span className="text-muted-foreground text-base">coins</span>
               </button>
             ))}
           </div>

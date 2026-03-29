@@ -134,16 +134,16 @@ export default function ProfilePage({
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <header className="orange-gradient text-white flex items-center px-4 h-16 flex-none">
+      <header className="orange-gradient text-white flex items-center px-5 h-16 flex-none">
         <button
           type="button"
           onClick={() => navigate({ name: "home" })}
-          className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center mr-3"
+          className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mr-3"
           data-ocid="profile.close_button"
         >
-          <ArrowLeft size={20} />
+          <ArrowLeft size={24} />
         </button>
-        <span className="font-bold text-lg flex-1 text-center mr-9">
+        <span className="font-bold text-xl flex-1 text-center mr-9">
           My Profile
         </span>
       </header>
@@ -182,14 +182,14 @@ export default function ProfilePage({
                   {currentName[0]?.toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <div className="absolute bottom-1 right-1 w-8 h-8 rounded-full bg-primary flex items-center justify-center border-2 border-white">
-                <Camera size={14} className="text-white" />
+              <div className="absolute bottom-1 right-1 w-11 h-11 rounded-full bg-primary flex items-center justify-center border-2 border-white">
+                <Camera size={18} className="text-white" />
               </div>
             </button>
           </div>
 
           {editing ? (
-            <div className="flex gap-2 items-center mb-2">
+            <div className="flex gap-3 items-center mb-2">
               <Input
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value)}
@@ -199,8 +199,8 @@ export default function ProfilePage({
               />
             </div>
           ) : (
-            <div className="flex items-center gap-2 mb-1">
-              <h2 className="text-xl font-bold">
+            <div className="flex items-center gap-3 mb-1">
+              <h2 className="text-2xl font-bold">
                 {isLoading ? "Loading..." : currentName}
               </h2>
               <button
@@ -211,13 +211,13 @@ export default function ProfilePage({
                 }}
                 data-ocid="profile.edit_button"
               >
-                <Edit2 size={16} className="text-muted-foreground" />
+                <Edit2 size={20} className="text-muted-foreground" />
               </button>
             </div>
           )}
 
-          <div className="flex items-center gap-2 mb-1">
-            <span className="bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="bg-accent text-primary text-base font-bold px-4 py-1 rounded-full">
               ID: #{userId}
             </span>
           </div>
@@ -231,26 +231,26 @@ export default function ProfilePage({
             ].map((s, i) => (
               <div key={s.label} className="text-center">
                 {i > 0 && <div className="absolute" />}
-                <p className="text-xl font-bold">{s.val}</p>
-                <p className="text-xs text-muted-foreground">{s.label}</p>
+                <p className="text-2xl font-bold">{s.val}</p>
+                <p className="text-base text-muted-foreground">{s.label}</p>
               </div>
             ))}
           </div>
 
           {/* Coin balances */}
-          <div className="w-full grid grid-cols-2 gap-3 mb-4">
-            <div className="bg-white rounded-2xl p-3 shadow-card flex items-center gap-3">
-              <span className="text-2xl">🪙</span>
+          <div className="w-full grid grid-cols-2 gap-4 mb-4">
+            <div className="bg-white rounded-2xl p-4 shadow-card flex items-center gap-4">
+              <span className="text-3xl">🪙</span>
               <div>
-                <p className="text-xs text-muted-foreground">Coins</p>
-                <p className="font-bold text-sm">{coins.toLocaleString()}</p>
+                <p className="text-base text-muted-foreground">Coins</p>
+                <p className="font-bold text-base">{coins.toLocaleString()}</p>
               </div>
             </div>
-            <div className="bg-white rounded-2xl p-3 shadow-card flex items-center gap-3">
-              <span className="text-2xl">🥇</span>
+            <div className="bg-white rounded-2xl p-4 shadow-card flex items-center gap-4">
+              <span className="text-3xl">🥇</span>
               <div>
-                <p className="text-xs text-muted-foreground">Gold Coins</p>
-                <p className="font-bold text-sm text-yellow-600">
+                <p className="text-base text-muted-foreground">Gold Coins</p>
+                <p className="font-bold text-base text-yellow-600">
                   {goldCoins.toLocaleString()}
                 </p>
               </div>
@@ -261,19 +261,19 @@ export default function ProfilePage({
           <button
             type="button"
             onClick={() => setLiveTypeOpen(true)}
-            className="w-full text-white rounded-2xl py-3.5 flex items-center justify-center gap-2 font-bold text-base shadow-orange mb-4"
+            className="w-full text-white rounded-2xl py-5.5 flex items-center justify-center gap-3 font-bold text-lg shadow-orange mb-4"
             style={{
               background:
                 "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
             }}
             data-ocid="profile.primary_button"
           >
-            <Radio size={18} />
+            <Radio size={22} />
             Go Live
           </button>
 
           {editing && (
-            <div className="flex gap-2 w-full mb-4">
+            <div className="flex gap-3 w-full mb-4">
               <Button
                 variant="outline"
                 className="flex-1"
@@ -299,13 +299,13 @@ export default function ProfilePage({
         </div>
 
         {/* Posts grid */}
-        <div className="px-4 mb-4">
-          <h3 className="font-bold text-sm mb-3 text-foreground">Posts</h3>
-          <div className="grid grid-cols-3 gap-1">
+        <div className="px-5 mb-4">
+          <h3 className="font-bold text-base mb-3 text-foreground">Posts</h3>
+          <div className="grid grid-cols-3 gap-2">
             {SAMPLE_POSTS.map((post, i) => (
               <motion.div
                 key={post.id}
-                className="aspect-square rounded-lg overflow-hidden"
+                className="aspect-square rounded-xl overflow-hidden"
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.06 }}
@@ -322,7 +322,7 @@ export default function ProfilePage({
         </div>
 
         {/* Sign out */}
-        <div className="px-4 mb-4">
+        <div className="px-5 mb-4">
           <Button
             variant="outline"
             className="w-full border-destructive text-destructive hover:bg-destructive/10"
@@ -333,7 +333,7 @@ export default function ProfilePage({
           </Button>
         </div>
 
-        <footer className="py-3 text-center text-xs text-muted-foreground">
+        <footer className="py-4 text-center text-base text-muted-foreground">
           © {new Date().getFullYear()}. Built with ❤️ using{" "}
           <a
             href={`https://caffeine.ai?utm_source=caffeine-footer&utm_medium=referral&utm_content=${encodeURIComponent(window.location.hostname)}`}
@@ -353,7 +353,7 @@ export default function ProfilePage({
           data-ocid="profile.livetype.dialog"
         >
           <DialogHeader>
-            <DialogTitle className="text-center text-xl font-bold text-primary">
+            <DialogTitle className="text-center text-2xl font-bold text-primary">
               Choose Live Type
             </DialogTitle>
           </DialogHeader>
@@ -361,32 +361,28 @@ export default function ProfilePage({
             <button
               type="button"
               onClick={() => handleSelectLiveType("audio")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-5 hover:border-primary transition-colors"
               data-ocid="profile.audio_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
-                <Mic size={32} className="text-white" />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-orange">
+                <Mic size={38} className="text-white" />
               </div>
-              <span className="text-primary font-bold text-base">
-                Audio Live
-              </span>
-              <span className="text-muted-foreground text-xs text-center">
+              <span className="text-primary font-bold text-lg">Audio Live</span>
+              <span className="text-muted-foreground text-base text-center">
                 Microphone only, RingID 2 branding
               </span>
             </button>
             <button
               type="button"
               onClick={() => handleSelectLiveType("video")}
-              className="flex flex-col items-center gap-3 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-4 hover:border-primary transition-colors"
+              className="flex flex-col items-center gap-4 bg-accent border-2 border-primary/20 rounded-2xl py-8 px-5 hover:border-primary transition-colors"
               data-ocid="profile.video_live.button"
             >
-              <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center shadow-orange">
-                <Camera size={32} className="text-white" />
+              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center shadow-orange">
+                <Camera size={38} className="text-white" />
               </div>
-              <span className="text-primary font-bold text-base">
-                Video Live
-              </span>
-              <span className="text-muted-foreground text-xs text-center">
+              <span className="text-primary font-bold text-lg">Video Live</span>
+              <span className="text-muted-foreground text-base text-center">
                 Camera + microphone stream
               </span>
             </button>
@@ -411,7 +407,7 @@ export default function ProfilePage({
               onKeyDown={(e) => e.key === "Enter" && handleCreate()}
               data-ocid="profile.input"
             />
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Button
                 variant="outline"
                 className="flex-1"
