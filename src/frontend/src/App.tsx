@@ -26,6 +26,7 @@ import { CreditCard, Lock, ShoppingCart } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import SplashScreen from "./components/SplashScreen";
+import { useCoinBalance } from "./hooks/useCoinBalance";
 import { usePhoneAuth } from "./hooks/usePhoneAuth";
 import AppsPage from "./pages/AppsPage";
 import ChatPage from "./pages/ChatPage";
@@ -35,6 +36,7 @@ import LiveTabPage from "./pages/LiveTabPage";
 import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import TVPage from "./pages/TVPage";
+import WalletPage from "./pages/WalletPage";
 
 export type AppPage =
   | { name: "home" }
@@ -48,7 +50,8 @@ export type AppPage =
       isHost?: boolean;
       liveType?: "audio" | "video";
     }
-  | { name: "profile" };
+  | { name: "profile" }
+  | { name: "wallet" };
 
 const MAIN_TABS = [
   { name: "home" as const, label: "Home", icon: Home },
@@ -60,6 +63,7 @@ const MAIN_TABS = [
 
 export default function App() {
   const { session, isLoading, logout } = usePhoneAuth();
+  const { coins, goldCoins } = useCoinBalance();
   const [showSplash, setShowSplash] = useState(true);
   const [page, setPage] = useState<AppPage>({ name: "home" });
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -149,10 +153,10 @@ export default function App() {
                       </p>
                       <div className="flex gap-2 mt-2">
                         <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
-                          🪙 0
+                          🪙 {coins.toLocaleString()}
                         </span>
                         <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">
-                          🥇 25K
+                          🥇 {goldCoins.toLocaleString()}
                         </span>
                       </div>
                     </div>
@@ -172,23 +176,30 @@ export default function App() {
                           icon: ShoppingCart,
                           label: "Buy",
                           ocid: "home.drawer.buy.button",
+                          action: () => {
+                            setPage({ name: "wallet" });
+                            setDrawerOpen(false);
+                          },
                         },
                         {
                           icon: ArrowLeftRight,
                           label: "Transfer",
                           ocid: "home.drawer.transfer.button",
+                          action: undefined,
                         },
                         {
                           icon: CreditCard,
                           label: "Cash Out",
                           ocid: "home.drawer.cashout.button",
+                          action: undefined,
                         },
-                      ].map(({ icon: Icon, label, ocid }) => (
+                      ].map(({ icon: Icon, label, ocid, action }) => (
                         <button
                           key={label}
                           type="button"
                           className="flex flex-col items-center gap-1.5 py-4 hover:bg-accent transition-colors"
                           data-ocid={ocid}
+                          onClick={action}
                         >
                           <Icon size={20} className="text-primary" />
                           <span className="text-xs text-muted-foreground font-medium">
@@ -494,6 +505,7 @@ export default function App() {
             />
           )}
           {page.name === "profile" && <ProfilePage navigate={setPage} />}
+          {page.name === "wallet" && <WalletPage navigate={setPage} />}
         </div>
 
         <Toaster />

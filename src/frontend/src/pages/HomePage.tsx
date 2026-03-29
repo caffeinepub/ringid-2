@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import {
   Calendar,
   Camera,
+  Copy,
   Heart,
   Image,
   MessageCircle,
@@ -424,6 +425,73 @@ export default function HomePage({
                     More &gt;&gt;&gt;
                   </span>
                 </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Send Money */}
+          <div className="px-3 mb-3">
+            <div className="bg-white rounded-2xl shadow-card border-2 border-orange-400 overflow-hidden">
+              <div className="bg-gradient-to-r from-orange-500 to-orange-400 px-4 py-2">
+                <span className="text-white font-bold text-base">
+                  💸 Send Money / রিচার্জ করুন
+                </span>
+              </div>
+              <div className="divide-y divide-gray-100">
+                <div className="flex items-center justify-between px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
+                      style={{ backgroundColor: "#E2136E" }}
+                    >
+                      bK
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-800 text-sm">bKash</p>
+                      <p className="text-gray-500 text-xs font-mono">
+                        01*******65
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText("01318079765");
+                      toast.success("Number copied! 📋");
+                    }}
+                    className="p-2 rounded-xl bg-pink-50 text-pink-600 active:scale-95 transition-transform"
+                    data-ocid="home.bkash.button"
+                  >
+                    <Copy size={18} />
+                  </button>
+                </div>
+                <div className="flex items-center justify-between px-4 py-3">
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
+                      style={{ backgroundColor: "#F7941D" }}
+                    >
+                      Na
+                    </div>
+                    <div>
+                      <p className="font-bold text-gray-800 text-sm">Nagad</p>
+                      <p className="text-gray-500 text-xs font-mono">
+                        01*******65
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      navigator.clipboard.writeText("01318079765");
+                      toast.success("Number copied! 📋");
+                    }}
+                    className="p-2 rounded-xl bg-orange-50 text-orange-600 active:scale-95 transition-transform"
+                    data-ocid="home.nagad.button"
+                  >
+                    <Copy size={18} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -12,6 +12,7 @@ import { motion } from "motion/react";
 import { useRef, useState } from "react";
 import { toast } from "sonner";
 import type { AppPage } from "../App";
+import { useCoinBalance } from "../hooks/useCoinBalance";
 import { useInternetIdentity } from "../hooks/useInternetIdentity";
 import {
   useCreateRoom,
@@ -35,6 +36,7 @@ export default function ProfilePage({
   const { data: profile, isLoading } = useGetCallerProfile();
   const updateProfile = useUpdateProfile();
   const createRoom = useCreateRoom();
+  const { coins, goldCoins } = useCoinBalance();
 
   const [editing, setEditing] = useState(false);
   const [displayName, setDisplayName] = useState("");
@@ -241,14 +243,16 @@ export default function ProfilePage({
               <span className="text-2xl">🪙</span>
               <div>
                 <p className="text-xs text-muted-foreground">Coins</p>
-                <p className="font-bold text-sm">0</p>
+                <p className="font-bold text-sm">{coins.toLocaleString()}</p>
               </div>
             </div>
             <div className="bg-white rounded-2xl p-3 shadow-card flex items-center gap-3">
               <span className="text-2xl">🥇</span>
               <div>
                 <p className="text-xs text-muted-foreground">Gold Coins</p>
-                <p className="font-bold text-sm text-yellow-600">25,000</p>
+                <p className="font-bold text-sm text-yellow-600">
+                  {goldCoins.toLocaleString()}
+                </p>
               </div>
             </div>
           </div>
