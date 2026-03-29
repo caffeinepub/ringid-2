@@ -56,7 +56,7 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-muted">
       <div className="w-full max-w-[480px] min-h-screen flex flex-col overflow-hidden">
         {/* Hero gradient */}
-        <div className="orange-gradient flex-none h-64 flex flex-col items-center justify-center gap-4 relative">
+        <div className="orange-gradient flex-none h-72 flex flex-col items-center justify-center gap-4 relative">
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -66,15 +66,15 @@ export default function LoginPage() {
             }}
           />
           <motion.div
-            className="w-24 h-24"
+            className="w-28 h-28 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/30"
             initial={{ scale: 0.7, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 200, damping: 18 }}
           >
             <img
-              src="/assets/uploads/12941_4-77548173-logo-019d3586-2fad-7059-b460-6fe62defa3cb-1.webp"
+              src="/assets/generated/ringid2-logo-r2.dim_400x400.png"
               alt="RingID 2"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </motion.div>
           <motion.div
@@ -99,6 +99,16 @@ export default function LoginPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25 }}
           >
+            {/* Welcome Back heading */}
+            <div className="text-center mb-5">
+              <h2 className="text-2xl font-bold text-foreground">
+                {mode === "login" ? "Welcome Back" : "Create Account"}
+              </h2>
+              <p className="text-muted-foreground text-sm mt-1">
+                {mode === "login" ? "আপনার অ্যাকাউন্টে লগইন করুন" : "নতুন অ্যাকাউন্ট খুলুন"}
+              </p>
+            </div>
+
             {/* Mode toggle tabs */}
             <div className="flex rounded-2xl overflow-hidden border border-gray-200 mb-6">
               {(["login", "register"] as Mode[]).map((m) => (
