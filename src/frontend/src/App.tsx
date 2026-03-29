@@ -427,7 +427,7 @@ export default function App() {
               </div>
 
               <img
-                src="/assets/uploads/12941_4-77548173-logo-019d3586-2fad-7059-b460-6fe62defa3cb-1.webp"
+                src="/assets/generated/ringid2-logo-r2.dim_400x400.png"
                 alt="RingID"
                 className="h-8 object-contain"
               />
