@@ -56,7 +56,7 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-muted">
       <div className="w-full max-w-[480px] min-h-screen flex flex-col overflow-hidden">
         {/* Hero gradient */}
-        <div className="orange-gradient flex-none h-72 flex flex-col items-center justify-center gap-4 relative">
+        <div className="orange-gradient flex-none h-56 flex flex-col items-center justify-center gap-4 relative">
           <div
             className="absolute inset-0 opacity-20"
             style={{
@@ -65,18 +65,6 @@ export default function LoginPage() {
               backgroundSize: "40px 40px",
             }}
           />
-          <motion.div
-            className="w-28 h-28 rounded-3xl overflow-hidden shadow-2xl border-4 border-white/30"
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ type: "spring", stiffness: 200, damping: 18 }}
-          >
-            <img
-              src="/assets/generated/ringid2-logo-r2.dim_400x400.png"
-              alt="RingID 2"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
           <motion.div
             className="text-center"
             initial={{ y: 10, opacity: 0 }}
