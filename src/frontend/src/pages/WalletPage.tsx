@@ -60,8 +60,30 @@ function CopyNumberRow({
       <button
         type="button"
         onClick={() => {
-          navigator.clipboard.writeText("01318079765");
-          toast.success(`${label} নম্বর কপি হয়েছে! 📋`);
+          const num = "01318079765";
+          const tryClipboard = async () => {
+            try {
+              await navigator.clipboard.writeText(num);
+              toast.success(`${label} নম্বর কপি হয়েছে! 📋`);
+            } catch {
+              // Fallback: create a temp input
+              const el = document.createElement("input");
+              el.value = num;
+              el.style.position = "fixed";
+              el.style.opacity = "0";
+              document.body.appendChild(el);
+              el.focus();
+              el.select();
+              try {
+                document.execCommand("copy");
+                toast.success(`${label} নম্বর কপি হয়েছে! 📋`);
+              } catch {
+                toast.error(`কপি হয়নি। নম্বর: ${num}`);
+              }
+              document.body.removeChild(el);
+            }
+          };
+          tryClipboard();
         }}
         className="flex items-center gap-1 px-3 py-2 rounded-xl bg-white border border-gray-200 text-gray-600 active:scale-95 transition-transform text-xs font-semibold shadow-sm"
       >
