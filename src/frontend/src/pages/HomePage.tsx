@@ -337,7 +337,7 @@ export default function HomePage({
             data-ocid="home.panel"
           >
             <span
-              className="marquee-track text-white font-semibold text-sm px-4"
+              className="marquee-track text-white font-medium text-xs px-4"
               style={{ paddingTop: "2px", paddingBottom: "2px" }}
             >
               🎉 Welcome to RingID 2! Live streaming, coin gifting, TV channels
