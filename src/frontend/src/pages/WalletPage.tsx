@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -36,6 +35,42 @@ type PendingPurchase = {
   price: number;
   amount: number;
 };
+
+function CopyNumberRow({
+  label,
+  color,
+  initials,
+}: { label: string; color: string; initials: string }) {
+  return (
+    <div className="flex items-center justify-between bg-gray-50 rounded-xl px-4 py-3">
+      <div className="flex items-center gap-3">
+        <div
+          className="w-11 h-11 rounded-full flex items-center justify-center font-black text-white text-sm"
+          style={{ backgroundColor: color }}
+        >
+          {initials}
+        </div>
+        <div>
+          <p className="font-bold text-gray-800 text-sm">{label}</p>
+          <p className="text-gray-500 text-sm font-mono tracking-wider">
+            01*******65
+          </p>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={() => {
+          navigator.clipboard.writeText("01318079765");
+          toast.success(`${label} নম্বর কপি হয়েছে! 📋`);
+        }}
+        className="flex items-center gap-1 px-3 py-2 rounded-xl bg-white border border-gray-200 text-gray-600 active:scale-95 transition-transform text-xs font-semibold shadow-sm"
+      >
+        <Copy size={14} />
+        Copy
+      </button>
+    </div>
+  );
+}
 
 export default function WalletPage({
   navigate,
@@ -122,66 +157,6 @@ export default function WalletPage({
 
       {/* Tabs */}
       <div className="flex-1 px-4 pt-4 pb-6">
-        {/* bKash/Nagad Payment Info */}
-        <div className="bg-white rounded-2xl border-2 border-orange-400 overflow-hidden mb-4">
-          <div className="bg-gradient-to-r from-orange-500 to-orange-400 px-4 py-2">
-            <span className="text-white font-bold text-base">
-              💳 পেমেন্ট করুন / Send Money
-            </span>
-          </div>
-          <div className="divide-y divide-gray-100">
-            <div className="flex items-center justify-between px-4 py-3">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
-                  style={{ backgroundColor: "#E2136E" }}
-                >
-                  bK
-                </div>
-                <div>
-                  <p className="font-bold text-gray-800 text-sm">bKash</p>
-                  <p className="text-gray-500 text-xs font-mono">01*******65</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText("01318079765");
-                  toast.success("Number copied! 📋");
-                }}
-                className="p-2 rounded-xl bg-pink-50 text-pink-600 active:scale-95 transition-transform"
-                data-ocid="wallet.bkash.button"
-              >
-                <Copy size={18} />
-              </button>
-            </div>
-            <div className="flex items-center justify-between px-4 py-3">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
-                  style={{ backgroundColor: "#F7941D" }}
-                >
-                  Na
-                </div>
-                <div>
-                  <p className="font-bold text-gray-800 text-sm">Nagad</p>
-                  <p className="text-gray-500 text-xs font-mono">01*******65</p>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  navigator.clipboard.writeText("01318079765");
-                  toast.success("Number copied! 📋");
-                }}
-                className="p-2 rounded-xl bg-orange-50 text-orange-600 active:scale-95 transition-transform"
-                data-ocid="wallet.nagad.button"
-              >
-                <Copy size={18} />
-              </button>
-            </div>
-          </div>
-        </div>
         <Tabs defaultValue="coin" data-ocid="wallet.tab">
           <TabsList className="w-full mb-4 h-12 bg-white shadow-sm rounded-xl">
             <TabsTrigger
@@ -290,7 +265,7 @@ export default function WalletPage({
         </Tabs>
       </div>
 
-      {/* Confirm Dialog */}
+      {/* Buy Dialog with bKash/Nagad */}
       <Dialog open={!!pending} onOpenChange={(o) => !o && setPending(null)}>
         <DialogContent
           className="max-w-[340px] rounded-2xl"
@@ -298,53 +273,57 @@ export default function WalletPage({
         >
           <DialogHeader>
             <DialogTitle className="text-center text-base font-bold">
-              ক্রয় নিশ্চিত করুন
+              💳 পেমেন্ট করুন
             </DialogTitle>
           </DialogHeader>
           {pending && (
-            <div className="text-center py-2 space-y-2">
-              <p className="text-sm text-muted-foreground">
-                bKash/Nagad নম্বর{" "}
-                <span className="font-bold text-foreground font-mono">
-                  01*******65
-                </span>{" "}
-                তে{" "}
-                <span className="font-bold text-primary">
-                  ৳{pending.price.toLocaleString()}
-                </span>{" "}
-                পাঠান।
-              </p>
-              <p className="text-sm text-muted-foreground">
-                পেমেন্ট নিশ্চিত হলে{" "}
-                <span className="font-bold text-foreground">
-                  {pending.amount.toLocaleString()}{" "}
-                  {pending.type === "coin" ? "কয়েন" : "গোল্ড কয়েন"}
-                </span>{" "}
-                যোগ হবে।
-              </p>
+            <div className="space-y-4">
+              <div className="bg-orange-50 border border-orange-200 rounded-xl px-4 py-3 text-center">
+                <p className="text-sm text-gray-600">
+                  নিচের নম্বরে{" "}
+                  <span className="font-bold text-orange-600 text-base">
+                    ৳{pending.price.toLocaleString()}
+                  </span>{" "}
+                  পাঠান
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  পেমেন্টের পর{" "}
+                  <span className="font-semibold text-gray-700">
+                    {pending.amount.toLocaleString()}{" "}
+                    {pending.type === "coin" ? "কয়েন 🪙" : "গোল্ড কয়েন 🥇"}
+                  </span>{" "}
+                  যোগ হবে
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <CopyNumberRow label="bKash" color="#E2136E" initials="bK" />
+                <CopyNumberRow label="Nagad" color="#F7941D" initials="Na" />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                <Button
+                  variant="outline"
+                  className="rounded-xl font-bold"
+                  onClick={() => setPending(null)}
+                  data-ocid="wallet.cancel_button"
+                >
+                  বাতিল
+                </Button>
+                <Button
+                  className="rounded-xl font-bold text-white"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
+                  }}
+                  onClick={handleConfirm}
+                  data-ocid="wallet.confirm_button"
+                >
+                  নিশ্চিত করুন
+                </Button>
+              </div>
             </div>
           )}
-          <DialogFooter className="flex gap-2">
-            <Button
-              variant="outline"
-              className="flex-1"
-              onClick={() => setPending(null)}
-              data-ocid="wallet.cancel_button"
-            >
-              বাতিল
-            </Button>
-            <Button
-              className="flex-1 text-white"
-              style={{
-                background:
-                  "linear-gradient(135deg, oklch(0.64 0.22 38) 0%, oklch(0.70 0.20 50) 100%)",
-              }}
-              onClick={handleConfirm}
-              data-ocid="wallet.confirm_button"
-            >
-              নিশ্চিত করুন
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
