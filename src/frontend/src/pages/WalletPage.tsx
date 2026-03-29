@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Coins, Star } from "lucide-react";
+import { ArrowLeft, Coins, Copy, Star } from "lucide-react";
 import { motion } from "motion/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -122,6 +122,66 @@ export default function WalletPage({
 
       {/* Tabs */}
       <div className="flex-1 px-4 pt-4 pb-6">
+        {/* bKash/Nagad Payment Info */}
+        <div className="bg-white rounded-2xl border-2 border-orange-400 overflow-hidden mb-4">
+          <div className="bg-gradient-to-r from-orange-500 to-orange-400 px-4 py-2">
+            <span className="text-white font-bold text-base">
+              💳 পেমেন্ট করুন / Send Money
+            </span>
+          </div>
+          <div className="divide-y divide-gray-100">
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
+                  style={{ backgroundColor: "#E2136E" }}
+                >
+                  bK
+                </div>
+                <div>
+                  <p className="font-bold text-gray-800 text-sm">bKash</p>
+                  <p className="text-gray-500 text-xs font-mono">01*******65</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText("01318079765");
+                  toast.success("Number copied! 📋");
+                }}
+                className="p-2 rounded-xl bg-pink-50 text-pink-600 active:scale-95 transition-transform"
+                data-ocid="wallet.bkash.button"
+              >
+                <Copy size={18} />
+              </button>
+            </div>
+            <div className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center font-black text-white text-sm"
+                  style={{ backgroundColor: "#F7941D" }}
+                >
+                  Na
+                </div>
+                <div>
+                  <p className="font-bold text-gray-800 text-sm">Nagad</p>
+                  <p className="text-gray-500 text-xs font-mono">01*******65</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText("01318079765");
+                  toast.success("Number copied! 📋");
+                }}
+                className="p-2 rounded-xl bg-orange-50 text-orange-600 active:scale-95 transition-transform"
+                data-ocid="wallet.nagad.button"
+              >
+                <Copy size={18} />
+              </button>
+            </div>
+          </div>
+        </div>
         <Tabs defaultValue="coin" data-ocid="wallet.tab">
           <TabsList className="w-full mb-4 h-12 bg-white shadow-sm rounded-xl">
             <TabsTrigger
@@ -242,14 +302,27 @@ export default function WalletPage({
             </DialogTitle>
           </DialogHeader>
           {pending && (
-            <p className="text-center text-sm text-muted-foreground py-2">
-              ৳{pending.price.toLocaleString()} এর বিনিময়ে{" "}
-              <span className="font-bold text-foreground">
-                {pending.amount.toLocaleString()}{" "}
-                {pending.type === "coin" ? "কয়েন" : "গোল্ড কয়েন"}
-              </span>{" "}
-              কিনবেন?
-            </p>
+            <div className="text-center py-2 space-y-2">
+              <p className="text-sm text-muted-foreground">
+                bKash/Nagad নম্বর{" "}
+                <span className="font-bold text-foreground font-mono">
+                  01*******65
+                </span>{" "}
+                তে{" "}
+                <span className="font-bold text-primary">
+                  ৳{pending.price.toLocaleString()}
+                </span>{" "}
+                পাঠান।
+              </p>
+              <p className="text-sm text-muted-foreground">
+                পেমেন্ট নিশ্চিত হলে{" "}
+                <span className="font-bold text-foreground">
+                  {pending.amount.toLocaleString()}{" "}
+                  {pending.type === "coin" ? "কয়েন" : "গোল্ড কয়েন"}
+                </span>{" "}
+                যোগ হবে।
+              </p>
+            </div>
           )}
           <DialogFooter className="flex gap-2">
             <Button
