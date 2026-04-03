@@ -7,7 +7,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Calendar,
@@ -250,7 +249,8 @@ export default function HomePage({
 
   return (
     <div className="flex flex-col h-full bg-gray-50">
-      <ScrollArea className="flex-1">
+      {/* Scrollable content area — using plain overflow-y-auto for reliable flex behaviour */}
+      <div className="flex-1 min-h-0 overflow-y-auto">
         <div className="pb-20">
           {/* Quick action shortcuts */}
           <div className="bg-white px-4 py-4 mb-2">
@@ -348,19 +348,19 @@ export default function HomePage({
             </span>
           </div>
 
-          {/* Services grid */}
+          {/* Services grid — 6 cards in 3×2 layout, always fully visible */}
           <div className="px-4 mb-2">
-            <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-              <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white rounded-2xl p-3 shadow-sm border border-gray-100">
+              <div className="grid grid-cols-3 gap-2">
                 {/* ইসলামিক ফলার */}
                 <button
                   type="button"
                   onClick={() => toast.info("ইসলামিক ফলার")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors"
                   data-ocid="home.islamic.button"
                 >
-                  <span className="text-3xl">🌙</span>
-                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-2xl leading-none">🌙</span>
+                  <span className="text-xs font-semibold text-gray-700 text-center leading-tight">
                     ইসলামিক ফলার
                   </span>
                 </button>
@@ -369,13 +369,13 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Community Jobs")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors"
                   data-ocid="home.community_jobs.button"
                 >
-                  <div className="w-11 h-11 rounded-md bg-green-500 flex items-center justify-center">
-                    <Heart size={20} className="text-white" fill="white" />
+                  <div className="w-8 h-8 rounded-md bg-green-500 flex items-center justify-center">
+                    <Heart size={15} className="text-white" fill="white" />
                   </div>
-                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-xs font-semibold text-gray-700 text-center leading-tight">
                     Community Jobs
                   </span>
                 </button>
@@ -384,11 +384,11 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Doctors")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors"
                   data-ocid="home.doctors.button"
                 >
-                  <Stethoscope size={26} className="text-teal-600" />
-                  <span className="text-base font-semibold text-teal-700 text-center leading-tight">
+                  <Stethoscope size={22} className="text-teal-600" />
+                  <span className="text-xs font-semibold text-teal-700 text-center leading-tight">
                     Doctors
                   </span>
                 </button>
@@ -397,18 +397,18 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Ring Agent")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors"
                   data-ocid="home.ring_agent.button"
                 >
                   <div className="flex items-baseline gap-0.5">
-                    <span className="text-primary font-black text-base">
+                    <span className="text-primary font-black text-sm leading-none">
                       ring
                     </span>
-                    <span className="text-blue-900 font-black text-base">
+                    <span className="text-blue-900 font-black text-sm leading-none">
                       agent
                     </span>
                   </div>
-                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-xs font-semibold text-gray-700 text-center leading-tight">
                     Ring Agent
                   </span>
                 </button>
@@ -417,18 +417,18 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("Notice")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors relative"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors relative"
                   data-ocid="home.notice.button"
                 >
                   <div className="relative">
-                    <div className="w-11 h-11 rounded-md bg-yellow-400 flex items-center justify-center">
-                      <span className="text-yellow-900 font-black text-base">
+                    <div className="w-8 h-8 rounded-md bg-yellow-400 flex items-center justify-center">
+                      <span className="text-yellow-900 font-black text-sm">
                         !
                       </span>
                     </div>
-                    <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full" />
+                    <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-500 rounded-full" />
                   </div>
-                  <span className="text-base font-semibold text-gray-700 text-center leading-tight">
+                  <span className="text-xs font-semibold text-gray-700 text-center leading-tight">
                     Notice
                   </span>
                 </button>
@@ -437,13 +437,13 @@ export default function HomePage({
                 <button
                   type="button"
                   onClick={() => toast.info("More")}
-                  className="flex flex-col items-center justify-center gap-3 bg-white border border-gray-200 rounded-xl py-4 px-2 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center justify-center gap-1.5 bg-white border border-gray-200 rounded-xl py-3 px-1.5 hover:bg-gray-50 transition-colors"
                   data-ocid="home.more.button"
                 >
-                  <span className="text-primary font-black text-xl leading-none">
+                  <span className="text-primary font-black text-lg leading-none">
                     »»
                   </span>
-                  <span className="text-base font-semibold text-primary text-center leading-tight">
+                  <span className="text-xs font-semibold text-primary text-center leading-tight">
                     More &gt;&gt;&gt;
                   </span>
                 </button>
@@ -715,7 +715,7 @@ export default function HomePage({
             </a>
           </footer>
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Live type selection modal */}
       <Dialog open={liveTypeOpen} onOpenChange={setLiveTypeOpen}>
